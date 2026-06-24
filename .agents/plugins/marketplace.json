@@ -1,0 +1,20 @@
+{
+  "name": "goal-spec",
+  "interface": {
+    "displayName": "Goal Spec"
+  },
+  "plugins": [
+    {
+      "name": "goal-spec-plugin",
+      "source": {
+        "source": "local",
+        "path": "./plugins/goal-spec-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

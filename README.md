@@ -1,6 +1,6 @@
 # Goal Spec Plugin
 
-Goal Spec is a Codex plugin for turning ambiguous objectives into durable, verifier-gated, goal-executable specs.
+Goal Spec is a Codex plugin marketplace for turning ambiguous objectives into durable, verifier-gated, goal-executable specs.
 
 The main entry point is `$goal-spec`. It orchestrates specialist skills that each own one narrow part of the goal-spec pipeline:
 
@@ -14,6 +14,32 @@ The main entry point is `$goal-spec`. It orchestrates specialist skills that eac
 8. `goal-handoff-writer`
 9. `goal-self-deepinterview`
 10. `goal-spec-critic`
+
+## Marketplace Install
+
+Add this repository as a Codex plugin marketplace:
+
+```bash
+codex plugin marketplace add bbangjooo/goal-spec-plugin
+```
+
+Then open the Codex plugin directory, select the `Goal Spec` marketplace, and install `goal-spec-plugin`.
+
+You can also install from CLI after adding the marketplace:
+
+```bash
+codex plugin add goal-spec-plugin@goal-spec
+```
+
+## Repository Layout
+
+```text
+.agents/plugins/marketplace.json       # marketplace catalog
+plugins/goal-spec-plugin/              # installable Codex plugin
+  .codex-plugin/plugin.json
+  skills/
+examples/
+```
 
 ## What It Produces
 
@@ -56,24 +82,18 @@ For an already drafted spec:
 Use $goal-self-deepinterview to audit whether this drafted goal spec matches the user's intent.
 ```
 
-## Installation
-
-Clone this repository, then install it as a local Codex plugin using your normal Codex plugin workflow.
-
-During local development, you can also copy the `skills/` folders into `~/.codex/skills/`.
-
 ## Development
 
 Validate the plugin:
 
 ```bash
-python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py ~/goal-spec-plugin
+python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py ~/goal-spec-plugin/plugins/goal-spec-plugin
 ```
 
 Validate individual skills:
 
 ```bash
-for d in ~/goal-spec-plugin/skills/*; do
+for d in ~/goal-spec-plugin/plugins/goal-spec-plugin/skills/*; do
   python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$d"
 done
 ```
@@ -81,4 +101,3 @@ done
 ## License
 
 MIT
-
