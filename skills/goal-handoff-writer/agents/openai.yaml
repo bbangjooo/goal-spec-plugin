@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Handoff Writer"
+  short_description: "Write executable goal handoffs"
+  default_prompt: "Use $goal-handoff-writer to write the execution handoff for this goal contract."
+
+policy:
+  allow_implicit_invocation: true
+

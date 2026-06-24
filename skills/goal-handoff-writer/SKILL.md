@@ -1,0 +1,47 @@
+---
+name: goal-handoff-writer
+description: Use in the goal-spec pipeline to convert the assembled goal contract into direct Codex/OMX goal execution instructions, including create_goal, story execution, checkpoint, steering, blocked, and update_goal completion rules.
+---
+
+# Goal Handoff Writer
+
+## Purpose
+
+Write the section that a future goal executor can follow without rereading the design discussion.
+
+## Input
+
+```yaml
+aggregate_goal: required
+stories: required
+verifier_plan: required
+state_and_ledger: required
+steering_policy: required
+quality_gate: required
+```
+
+## Output
+
+```yaml
+execution_handoff:
+  create_goal_objective: required
+  story_execution_rules: []
+  checkpoint_rules: []
+  steering_rules: []
+  update_goal_complete_rule: required
+  blocked_rule: required
+```
+
+## Rules
+
+- Say exactly what aggregate goal to create.
+- Say how to execute story goals and in what order.
+- Say what state to read before work and what evidence to write after work.
+- Say when checkpoint complete is allowed.
+- Say when structured steering is required.
+- Forbid final `update_goal complete` until all active stories are complete or superseded and the quality gate is `APPROVE + CLEAR`.
+
+## Quality Bar
+
+The handoff should be copyable into a new goal execution turn as operational instructions.
+

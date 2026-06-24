@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Intent Extractor"
+  short_description: "Extract stable intent for goal specs"
+  default_prompt: "Use $goal-intent-extractor to extract the intent frame for this objective."
+
+policy:
+  allow_implicit_invocation: true
+

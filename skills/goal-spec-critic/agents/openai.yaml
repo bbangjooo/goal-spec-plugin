@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Spec Critic"
+  short_description: "Review goal specs before execution"
+  default_prompt: "Use $goal-spec-critic to review this goal contract before execution."
+
+policy:
+  allow_implicit_invocation: true
+

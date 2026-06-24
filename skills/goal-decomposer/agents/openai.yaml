@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Decomposer"
+  short_description: "Split aggregate goals into stories"
+  default_prompt: "Use $goal-decomposer to break this target outcome into checkpointable story goals."
+
+policy:
+  allow_implicit_invocation: true
+

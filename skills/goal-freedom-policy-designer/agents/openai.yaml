@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Freedom Policy Designer"
+  short_description: "Set autonomy, constraints, and gates"
+  default_prompt: "Use $goal-freedom-policy-designer to define the freedom policy for this goal spec."
+
+policy:
+  allow_implicit_invocation: true
+

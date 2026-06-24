@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Steering Policy Designer"
+  short_description: "Define auditable goal plan changes"
+  default_prompt: "Use $goal-steering-policy-designer to define safe steering rules for this goal plan."
+
+policy:
+  allow_implicit_invocation: true
+

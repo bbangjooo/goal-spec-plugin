@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal State Ledger Architect"
+  short_description: "Design durable goal memory and ledger"
+  default_prompt: "Use $goal-state-ledger-architect to define state and ledger rules for this goal spec."
+
+policy:
+  allow_implicit_invocation: true
+

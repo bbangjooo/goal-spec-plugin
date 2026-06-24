@@ -1,0 +1,7 @@
+interface:
+  display_name: "Goal Spec"
+  short_description: "Create goal-executable spec files"
+  default_prompt: "Use $goal-spec to turn this objective into a single goal-executable spec file."
+
+policy:
+  allow_implicit_invocation: true

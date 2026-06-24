@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Domain Process Mapper"
+  short_description: "Map required process and failure modes"
+  default_prompt: "Use $goal-domain-process-mapper to extract required process and failure modes for this objective."
+
+policy:
+  allow_implicit_invocation: true
+

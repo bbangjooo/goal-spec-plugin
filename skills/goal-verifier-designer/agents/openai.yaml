@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Verifier Designer"
+  short_description: "Design evidence-backed verifier checks"
+  default_prompt: "Use $goal-verifier-designer to create verifier checks for these story goals."
+
+policy:
+  allow_implicit_invocation: true
+

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Self Deepinterview"
+  short_description: "Audit goal specs against user intent"
+  default_prompt: "Use $goal-self-deepinterview to audit whether this drafted goal spec matches the user's intent."
+
+policy:
+  allow_implicit_invocation: true
+
