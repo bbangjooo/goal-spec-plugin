@@ -1,0 +1,7 @@
+interface:
+  display_name: "Goal Scope Contract Designer"
+  short_description: "Lock capability scope before decomposition"
+  default_prompt: "Use $goal-scope-contract-designer to convert intent, priorities, exclusions, and surfaces into a hard scope/capability contract."
+
+policy:
+  allow_implicit_invocation: true

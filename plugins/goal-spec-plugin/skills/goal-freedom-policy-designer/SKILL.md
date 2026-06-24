@@ -15,6 +15,7 @@ Design the autonomy boundary for a goal spec.
 intent_summary: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 required_processes: required
 domain_failure_modes: required
 authority_boundaries: required
@@ -41,6 +42,9 @@ freedom_policy:
 - Do not turn style preferences or familiar workflows into blockers without a domain reason.
 - Do not treat a surface-specific exclusion as a blanket exclusion when `goal_object_model` says another completion surface still owns the outcome.
 - Hard constraints should protect the declared completion surface and decomposition basis.
+- Completion-critical capabilities from the scope contract may not be placed in
+  free-to-defer zones. Deferring them requires user approval or evidence that
+  they are not applicable.
 
 ## Quality Bar
 

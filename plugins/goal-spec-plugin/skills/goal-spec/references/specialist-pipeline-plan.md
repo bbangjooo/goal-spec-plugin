@@ -19,6 +19,7 @@ goal-spec
       -> goal-intent-extractor
       -> goal-final-goal-designer
       -> goal-object-modeler
+      -> goal-scope-contract-designer
   -> goal-constraints
       -> goal-domain-process-mapper
       -> goal-freedom-policy-designer
@@ -47,7 +48,7 @@ Do not rely on one agent being broadly wise. Make quality emerge from:
 - compact unit outputs to limit root context growth
 - explicit input/output schemas
 - a stable final goal before decomposition
-- explicit goal object modeling before process mapping
+- explicit goal object modeling and scope/capability contracting before process mapping
 - verifier-backed completion
 - critic review before final output
 - traceability from user intent to story goals and checks
@@ -57,39 +58,39 @@ Do not rely on one agent being broadly wise. Make quality emerge from:
 
 ### 1. goal-framing
 
-Internal substeps: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`.
+Internal substeps: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`, `goal-scope-contract-designer`.
 
-Writes `units/01-framing.yaml`, `01-intent.yaml`, `02-final-goal.yaml`, and `03-goal-object-model.yaml`.
+Writes `units/01-framing.yaml`, `01-intent.yaml`, `02-final-goal.yaml`, `03-goal-object-model.yaml`, and `04-scope-contract.yaml`.
 
 ### 2. goal-constraints
 
 Internal substeps: `goal-domain-process-mapper`, `goal-freedom-policy-designer`.
 
-Writes `units/02-constraints.yaml`, `04-domain-process.yaml`, and `05-freedom-policy.yaml`.
+Writes `units/02-constraints.yaml`, `05-domain-process.yaml`, and `06-freedom-policy.yaml`.
 
 ### 3. goal-execution-design
 
 Internal substeps: `goal-decomposer`, `goal-verifier-designer`.
 
-Writes `units/03-execution-design.yaml`, `06-decomposition.yaml`, and `07-verifier-plan.yaml`.
+Writes `units/03-execution-design.yaml`, `07-decomposition.yaml`, and `08-verifier-plan.yaml`.
 
 ### 4. goal-runtime-policy
 
 Internal substeps: `goal-state-ledger-architect`, `goal-steering-policy-designer`.
 
-Writes `units/04-runtime-policy.yaml`, `08-state-ledger.yaml`, and `09-steering-policy.yaml`.
+Writes `units/04-runtime-policy.yaml`, `09-state-ledger.yaml`, and `10-steering-policy.yaml`.
 
 ### 5. goal-handoff
 
 Internal substep: `goal-handoff-writer`.
 
-Writes `units/05-handoff.yaml` and `10-execution-handoff.yaml`.
+Writes `units/05-handoff.yaml` and `11-execution-handoff.yaml`.
 
 ### 6. goal-review
 
 Internal substeps: `goal-self-deepinterview`, `goal-spec-critic`.
 
-Writes `units/06-review.yaml`, `11-self-deepinterview.yaml`, and `12-critic-verdict.yaml`.
+Writes `units/06-review.yaml`, `12-self-deepinterview.yaml`, and `13-critic-verdict.yaml`.
 
 ## Internal Specialist Roles
 
@@ -195,6 +196,7 @@ goal_object_model:
   excluded_surfaces: {}
   required_capability_chain: []
   missing_surface_risks: []
+  surface_capability_distinctions: []
   decomposition_basis: required
   verifier_focus: []
 ```
@@ -206,7 +208,42 @@ Quality bar:
 - Identify missing surface risks when a spec could satisfy the topic while failing the actual goal.
 - Provide a decomposition basis that later stories can organize around.
 
-### 4. goal-domain-process-mapper
+### 4. goal-scope-contract-designer
+
+Purpose: convert priorities, exclusions, mentioned topics, and discovered
+surfaces into a hard scope/capability contract before decomposition.
+
+Input:
+
+```yaml
+raw_user_objective: required
+intent_summary: required
+final_goal: required
+goal_object_model: required
+source_material: optional
+known_constraints: optional
+```
+
+Output:
+
+```yaml
+scope_contract:
+  completion_critical_axes: []
+  capability_contracts: []
+  surface_contracts: []
+  parity_or_coverage_matrices: []
+  defer_policy: {}
+  ambiguity_triggers: []
+```
+
+Quality bar:
+
+- Low-priority surfaces are sequencing guidance, not capability exclusions.
+- Completion-critical capabilities cannot be silently deferred by the agent.
+- Required parity or coverage matrices must define row sources, per-row
+  evidence, allowed statuses, and reject conditions.
+
+### 5. goal-domain-process-mapper
 
 Purpose: extract required domain workflows, references, and failure modes.
 
@@ -217,6 +254,7 @@ intent_summary: required
 domain: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 source_material: optional
 domain_references: optional
 ```
@@ -241,7 +279,7 @@ Quality bar:
 - Keep nonessential best practices as reference-only guidance.
 - Each required process must name the failure caused by skipping or reordering it.
 
-### 5. goal-freedom-policy-designer
+### 6. goal-freedom-policy-designer
 
 Purpose: decide what is constrained, sequenced, or free.
 
@@ -274,7 +312,7 @@ Quality bar:
 - Freedom zones should be explicit enough that executors do not ask unnecessary questions.
 - Escalation points are only for destructive, irreversible, credential-gated, external-production, or materially scope-changing decisions.
 
-### 6. goal-decomposer
+### 7. goal-decomposer
 
 Purpose: split the final aggregate goal into checkpointable story goals.
 
@@ -317,7 +355,7 @@ Quality bar:
 - Dependencies must preserve required process order.
 - The aggregate goal and stories must preserve the final goal rather than narrowing it for convenience.
 
-### 7. goal-verifier-designer
+### 8. goal-verifier-designer
 
 Purpose: design independent checks for each story and the aggregate goal.
 
@@ -353,7 +391,7 @@ Quality bar:
 - Maker self-report is never sufficient evidence.
 - Checks must state pass/fail criteria or explain why judgment is qualitative.
 
-### 8. goal-state-ledger-architect
+### 9. goal-state-ledger-architect
 
 Purpose: define durable memory so repeated goal execution compounds.
 
@@ -379,15 +417,16 @@ state_and_ledger:
       intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"
       goal_object_model: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/03-goal-object-model.yaml"
-      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-domain-process.yaml"
-      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-freedom-policy.yaml"
-      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-decomposition.yaml"
-      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-verifier-plan.yaml"
-      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-state-ledger.yaml"
-      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-critic-verdict.yaml"
+      scope_contract: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-scope-contract.yaml"
+      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-domain-process.yaml"
+      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-freedom-policy.yaml"
+      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-decomposition.yaml"
+      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml"
+      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
+      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -430,7 +469,7 @@ Quality bar:
 - Each repeated loop must write one loop document under `loop_documents_dir`.
 - Failure writeback must be specific enough to change the next iteration.
 
-### 9. goal-steering-policy-designer
+### 10. goal-steering-policy-designer
 
 Purpose: define safe plan mutation during execution.
 
@@ -472,7 +511,7 @@ Quality bar:
 - Superseding a story requires evidence that it is invalid, obsolete, duplicate, or blocked by an external decision.
 - Reordering may not violate required sequences unless the required sequence is explicitly revised with rationale.
 
-### 10. goal-handoff-writer
+### 11. goal-handoff-writer
 
 Purpose: turn the contract into execution instructions for Codex/OMX goal mode.
 
@@ -513,7 +552,7 @@ Quality bar:
 - It must require one loop document per execution loop.
 - Final completion requires all active stories complete or superseded and quality gate APPROVE + CLEAR.
 
-### 11. goal-self-deepinterview
+### 12. goal-self-deepinterview
 
 Purpose: audit the first full draft against the user's natural-language intent before final structural critique.
 
@@ -556,7 +595,7 @@ Quality bar:
 - Ask at most one concise option-based user question per round.
 - ALIGNED only when the draft faithfully operationalizes the user's natural language.
 
-### 12. goal-spec-critic
+### 13. goal-spec-critic
 
 Purpose: adversarially inspect the final contract before presentation or execution.
 

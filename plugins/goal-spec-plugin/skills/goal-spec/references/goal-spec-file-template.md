@@ -60,6 +60,7 @@ final_goal:
   non_goals: []
   decision_boundaries: []
   tradeoff_priority: []
+  completion_critical_axes: []
   goal_quality_checks: []
 ```
 
@@ -78,8 +79,51 @@ goal_object_model:
   excluded_surfaces: {}
   required_capability_chain: []
   missing_surface_risks: []
+  surface_capability_distinctions: []
   decomposition_basis: ""
   verifier_focus: []
+```
+
+## Scope Contract
+
+This section is intentionally both human-readable and machine-checkable. YAML
+alone is not sufficient for the final goal handoff because future executors need
+the rationale for scope boundaries, surface/capability distinctions, and
+deferral authority.
+
+```yaml
+scope_contract:
+  completion_critical_axes: []
+  capability_contracts:
+    - id: ""
+      capability: ""
+      source_terms: []
+      evidence_surfaces: []
+      required_outcome: ""
+      verifier_obligation: ""
+      allowed_statuses:
+        - implemented
+        - already_satisfied
+        - not_applicable_with_evidence
+        - user_approved_deferred
+      agent_may_defer: false
+  surface_contracts:
+    - surface: ""
+      priority: ""
+      excluded_work: []
+      still_valid_as_evidence_for: []
+      must_not_be_interpreted_as_excluding: []
+  parity_or_coverage_matrices:
+    - id: ""
+      purpose: ""
+      rows_must_come_from: []
+      each_row_requires: []
+      reject_if: []
+  defer_policy:
+    agent_may_defer: []
+    user_approval_required: []
+    defer_record_must_include: []
+  ambiguity_triggers: []
 ```
 
 ## Aggregate Goal
@@ -98,7 +142,7 @@ aggregate_goal:
 
 | Stage | Agent | Internal Substeps | Status | Unit Output |
 | --- | --- | --- | --- | --- |
-| 1 | goal-framing | intent, final goal, goal object | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/01-framing.yaml` |
+| 1 | goal-framing | intent, final goal, goal object, scope contract | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/01-framing.yaml` |
 | 2 | goal-constraints | domain process, freedom policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/02-constraints.yaml` |
 | 3 | goal-execution-design | decomposition, verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/03-execution-design.yaml` |
 | 4 | goal-runtime-policy | state/ledger, steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/04-runtime-policy.yaml` |
@@ -112,15 +156,16 @@ aggregate_goal:
 | 1 | goal-intent-extractor | Intent frame | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/01-intent.yaml` |
 | 2 | goal-final-goal-designer | Final goal | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/02-final-goal.yaml` |
 | 3 | goal-object-modeler | Goal object and completion surface | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/03-goal-object-model.yaml` |
-| 4 | goal-domain-process-mapper | Required process and failure modes | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/04-domain-process.yaml` |
-| 5 | goal-freedom-policy-designer | Freedom policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/05-freedom-policy.yaml` |
-| 6 | goal-decomposer | Aggregate and story goals | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/06-decomposition.yaml` |
-| 7 | goal-verifier-designer | Verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/07-verifier-plan.yaml` |
-| 8 | goal-state-ledger-architect | State and ledger | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/08-state-ledger.yaml` |
-| 9 | goal-steering-policy-designer | Steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/09-steering-policy.yaml` |
-| 10 | goal-handoff-writer | Execution handoff | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/10-execution-handoff.yaml` |
-| 11 | goal-self-deepinterview | Intent alignment audit | ALIGNED | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/11-self-deepinterview.yaml` |
-| 12 | goal-spec-critic | Critic verdict | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/12-critic-verdict.yaml` |
+| 4 | goal-scope-contract-designer | Scope and capability contract | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/04-scope-contract.yaml` |
+| 5 | goal-domain-process-mapper | Required process and failure modes | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/05-domain-process.yaml` |
+| 6 | goal-freedom-policy-designer | Freedom policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/06-freedom-policy.yaml` |
+| 7 | goal-decomposer | Aggregate and story goals | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/07-decomposition.yaml` |
+| 8 | goal-verifier-designer | Verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/08-verifier-plan.yaml` |
+| 9 | goal-state-ledger-architect | State and ledger | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/09-state-ledger.yaml` |
+| 10 | goal-steering-policy-designer | Steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/10-steering-policy.yaml` |
+| 11 | goal-handoff-writer | Execution handoff | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-handoff.yaml` |
+| 12 | goal-self-deepinterview | Intent alignment audit | ALIGNED | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/12-self-deepinterview.yaml` |
+| 13 | goal-spec-critic | Critic verdict | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/13-critic-verdict.yaml` |
 
 ## Story Goals
 
@@ -196,15 +241,16 @@ state_and_ledger:
       intent: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/02-final-goal.yaml"
       goal_object_model: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/03-goal-object-model.yaml"
-      domain_process: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/04-domain-process.yaml"
-      freedom_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/05-freedom-policy.yaml"
-      decomposition: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/06-decomposition.yaml"
-      verifier_plan: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/07-verifier-plan.yaml"
-      state_ledger: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/08-state-ledger.yaml"
-      steering_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/09-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/10-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/11-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/12-critic-verdict.yaml"
+      scope_contract: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/04-scope-contract.yaml"
+      domain_process: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/05-domain-process.yaml"
+      freedom_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/06-freedom-policy.yaml"
+      decomposition: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/07-decomposition.yaml"
+      verifier_plan: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/08-verifier-plan.yaml"
+      state_ledger: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/09-state-ledger.yaml"
+      steering_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/10-steering-policy.yaml"
+      execution_handoff: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/12-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/13-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/<YYYY-MM-DD-slug>/"
     ledger_dir: ".goal-specs/ledger/<YYYY-MM-DD-slug>/"
     brief: ".goal-specs/ledger/<YYYY-MM-DD-slug>/brief.md"
@@ -304,6 +350,7 @@ quality_gate:
   before_update_goal_complete:
     - all_active_stories_complete_or_superseded
     - final_verifier_evidence_present
+    - scope_contract_preserved
     - self_deepinterview_aligned
     - critic_verdict_approve
     - no_unresolved_blockers
@@ -314,7 +361,7 @@ quality_gate:
 Use this prompt to start goal execution from this spec:
 
 ```text
-Use the goal spec at <path to this file> as the execution contract. Create one aggregate goal from its Goal Handoff Header, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
+Use the goal spec at <path to this file> as the execution contract. Create one aggregate goal from its Goal Handoff Header, preserve its Scope Contract, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
 ```
 
 If the execution surface cannot read the file path, use this inline fallback:
@@ -324,9 +371,10 @@ Create one aggregate goal for: <aggregate goal objective>.
 Use these story goals: <story ids and objectives>.
 Preserve this final goal: <final_goal.objective>.
 Preserve this completion surface: <goal_object_model.completion_surface>.
+Preserve this scope contract: <scope_contract summary, completion-critical capabilities, required matrices, and deferral policy>.
 Follow the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy from the goal spec.
 For every execution loop, write `.goal-specs/ledger/<YYYY-MM-DD-slug>/loop-documents/iteration-NNN.md`.
-Do not mark the aggregate goal complete until all active stories are complete or superseded, required verifier evidence exists, self-deepinterview is ALIGNED, critic verdict is APPROVE, and the Quality Gate is APPROVE + CLEAR.
+Do not mark the aggregate goal complete until all active stories are complete or superseded, required verifier evidence exists, the scope contract is preserved, self-deepinterview is ALIGNED, critic verdict is APPROVE, and the Quality Gate is APPROVE + CLEAR.
 ```
 
 ## Self Deepinterview
@@ -343,6 +391,13 @@ self_deepinterview:
     constraint_fit: 0.0
     success_fit: 0.0
     autonomy_fit: 0.0
+    scope_contract_fit: 0.0
+  unit_micro_interviews:
+    framing: []
+    constraints: []
+    execution_design: []
+    runtime_policy: []
+    handoff: []
   resolved_internally: []
   unresolved_questions: []
   user_question:
@@ -357,6 +412,8 @@ self_deepinterview:
 ```text
 Create one aggregate Codex goal from the aggregate objective in this spec.
 Execute story goals in ledger order unless structured steering changes the order.
+Preserve the Scope Contract: completion-critical capabilities cannot be narrowed,
+silently deferred, or hidden under broad labels.
 Before each story, read the state artifacts listed above.
 After each attempt, write decisions, failures, blockers, evidence, steering mutations, and lessons to the ledger.
 For every execution loop/iteration, write a loop document under `.goal-specs/ledger/<YYYY-MM-DD-slug>/loop-documents/iteration-NNN.md`.

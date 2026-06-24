@@ -26,6 +26,7 @@ Do not spawn further agents by default.
 intent_summary: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 stories: required
 verifier_plan: required
 required_processes: required
@@ -42,8 +43,8 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/08-state-ledger.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/09-steering-policy.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml
 ```
 
 The unit output must include:
@@ -71,6 +72,9 @@ unit_result:
   mutations, and lessons learned.
 - Steering must allow learning without silent scope drift.
 - Plan mutation must never bypass verifier checks or quality gates.
+- Ledger artifacts must preserve scope-contract decisions, including why any
+  completion-critical capability is implemented, already satisfied, not
+  applicable, or user-approved deferred.
 
 ## Quality Bar
 

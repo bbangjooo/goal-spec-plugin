@@ -15,6 +15,7 @@ Define the durable memory contract for a goal spec.
 intent_summary: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 stories: required
 verifier_plan: required
 required_processes: required
@@ -38,15 +39,16 @@ state_and_ledger:
       intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"
       goal_object_model: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/03-goal-object-model.yaml"
-      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-domain-process.yaml"
-      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-freedom-policy.yaml"
-      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-decomposition.yaml"
-      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-verifier-plan.yaml"
-      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-state-ledger.yaml"
-      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-critic-verdict.yaml"
+      scope_contract: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-scope-contract.yaml"
+      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-domain-process.yaml"
+      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-freedom-policy.yaml"
+      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-decomposition.yaml"
+      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml"
+      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
+      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -93,6 +95,11 @@ state_and_ledger:
 - The single goal spec file is itself a state artifact and must be listed.
 - Unit outputs must be listed because the root orchestrator reads them before detailed specialist outputs.
 - The goal object model must be listed as an intermediate artifact because it defines the completion surface that later stories and verifiers must preserve.
+- The scope contract must be listed as an intermediate artifact because it
+  defines completion-critical capabilities, evidence surfaces, required
+  matrices, and deferral authority.
+- Read/write rules must preserve scope-contract status decisions for each
+  completion-critical capability.
 - Canonical goal-spec documents live under the project root's `.goal-specs/`; `.omx/ultragoal` paths are optional runtime mirrors only.
 
 ## Quality Bar

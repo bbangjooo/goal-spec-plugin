@@ -15,6 +15,7 @@ Write the section that a future goal executor can follow without rereading the d
 aggregate_goal: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 stories: required
 verifier_plan: required
 state_and_ledger: required
@@ -48,6 +49,11 @@ execution_handoff:
 - Say when checkpoint complete is allowed.
 - Say when structured steering is required.
 - Remind the executor to preserve the goal object model's completion surface and required capability chain during steering.
+- Remind the executor to preserve the scope contract's completion-critical
+  capabilities, surface/capability distinctions, required matrices, and deferral
+  policy during execution and steering.
+- The inline fallback prompt must include the scope contract summary; otherwise
+  a future executor may legally choose a smaller goal.
 - Forbid final `update_goal complete` until all active stories are complete or superseded and the quality gate is `APPROVE + CLEAR`.
 
 ## Quality Bar

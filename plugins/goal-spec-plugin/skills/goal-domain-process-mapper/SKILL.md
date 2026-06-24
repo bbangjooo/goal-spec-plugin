@@ -16,6 +16,7 @@ intent_summary: required
 domain: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 source_material: optional
 domain_references: optional
 ```
@@ -42,6 +43,8 @@ domain_guardrail_candidates: []
 - Failure modes should be concrete enough to become guardrails or verifier checks.
 - Required processes must cover the `goal_object_model.completion_surface` and any `required_capability_chain`, not only the user's mentioned topics.
 - If a user excluded one surface, preserve any runtime, policy, audit, or contract process still required by the goal object.
+- Treat scope-contract capability obligations as process-sensitive when order or
+  validation integrity affects whether the capability is genuinely preserved.
 - Do not decompose the goal into stories. Stop at domain process mapping.
 
 ## Quality Bar

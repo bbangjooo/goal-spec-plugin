@@ -26,6 +26,7 @@ Do not spawn further agents by default.
 intent_summary: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 required_processes: required
 freedom_policy: required
 domain_failure_modes: required
@@ -40,8 +41,8 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/03-execution-design.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/06-decomposition.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/07-verifier-plan.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/07-decomposition.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml
 ```
 
 The unit output must include:
@@ -70,6 +71,10 @@ unit_result:
 - Every story must be independently checkpointable.
 - Maker self-report is never sufficient evidence.
 - Every hard constraint must map to at least one verifier check.
+- Every completion-critical capability in the scope contract must be covered by
+  a story, success criterion, verifier check, or explicit user-approved deferral.
+- Required parity or coverage matrices must have story ownership and per-row
+  evidence requirements.
 
 ## Quality Bar
 

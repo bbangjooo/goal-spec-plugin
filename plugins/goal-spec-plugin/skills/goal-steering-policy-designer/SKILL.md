@@ -15,6 +15,7 @@ Allow goal execution to adapt without silent drift.
 stories: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 freedom_policy: required
 state_and_ledger: required
 authority_boundaries: required
@@ -50,6 +51,10 @@ steering_policy:
 - User escalation is required only at authority boundaries.
 - Steering may split or add stories to preserve the goal object model's completion surface when execution reveals a missing owning system or capability-chain step.
 - Steering must reject mutations that narrow the goal to mentioned-topic implementation while leaving the primary goal object incomplete.
+- Steering may split or add stories to preserve the scope contract, but it may
+  not delete, silently defer, or weaken a completion-critical capability.
+- Superseding a capability obligation requires user-approved deferral or
+  evidence-backed not-applicable status recorded in the ledger.
 
 ## Quality Bar
 

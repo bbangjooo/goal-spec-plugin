@@ -36,6 +36,7 @@ final_goal:
   non_goals: []
   decision_boundaries: []
   tradeoff_priority: []
+  completion_critical_axes: []
   goal_quality_checks: []
 ```
 
@@ -44,7 +45,12 @@ final_goal:
 - The final goal must describe a state, not an activity.
 - Keep it broad enough to preserve the user's intent and narrow enough to execute.
 - Completion requirements must be verifiable by evidence or a verifier.
+- Convert user phrases like "main changes", "major axes", "must preserve",
+  "same behavior", "compatible", "migration", "parity", and "complete" into
+  `completion_critical_axes` unless clearly optional.
 - Include non-goals and decision boundaries so story decomposition cannot expand scope silently.
+- Non-goals must be surface-specific. Do not write a non-goal that can be read
+  as excluding a capability unless the user explicitly excluded that capability.
 - Name what failure means. A goal without a failure definition is too vague.
 - Do not treat the user's mentioned topics as the final goal unless they are truly the completion object.
 - Write the desired end state clearly enough that `goal-object-modeler` can classify the primary goal object, completion surface, owning systems, and decomposition basis.

@@ -51,15 +51,16 @@ For each generated spec, create a slug-specific subdirectory and write specialis
   01-intent.yaml
   02-final-goal.yaml
   03-goal-object-model.yaml
-  04-domain-process.yaml
-  05-freedom-policy.yaml
-  06-decomposition.yaml
-  07-verifier-plan.yaml
-  08-state-ledger.yaml
-  09-steering-policy.yaml
-  10-execution-handoff.yaml
-  11-self-deepinterview.yaml
-  12-critic-verdict.yaml
+  04-scope-contract.yaml
+  05-domain-process.yaml
+  06-freedom-policy.yaml
+  07-decomposition.yaml
+  08-verifier-plan.yaml
+  09-state-ledger.yaml
+  10-steering-policy.yaml
+  11-execution-handoff.yaml
+  12-self-deepinterview.yaml
+  13-critic-verdict.yaml
 ```
 
 Reference notes that future goal execution should consult go under:
@@ -83,20 +84,21 @@ The final spec file must contain:
 5. `Aggregate Goal`
 6. `Agent Trace`
 7. `Specialist Trace`
-8. `Story Goals`
-9. `Required Process`
-10. `Freedom Policy`
-11. `Guardrails`
-12. `Verifier Plan`
-13. `State And Ledger`
-14. `Steering Policy`
-15. `Checkpoint Policy`
-16. `Loop Documentation Policy`
-17. `Quality Gate`
-18. `Goal Invocation Prompt`
-19. `Execution Handoff`
-20. `Self Deepinterview`
-21. `Critic Verdict`
+8. `Scope Contract`
+9. `Story Goals`
+10. `Required Process`
+11. `Freedom Policy`
+12. `Guardrails`
+13. `Verifier Plan`
+14. `State And Ledger`
+15. `Steering Policy`
+16. `Checkpoint Policy`
+17. `Loop Documentation Policy`
+18. `Quality Gate`
+19. `Goal Invocation Prompt`
+20. `Execution Handoff`
+21. `Self Deepinterview`
+22. `Critic Verdict`
 
 Read `references/goal-spec-file-template.md` for the canonical file template.
 
@@ -115,7 +117,7 @@ Each grouped agent executes its internal substeps in one agent context and write
 
 Use the leaf specialist skills as internal substep contracts:
 
-- `goal-framing`: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`
+- `goal-framing`: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`, `goal-scope-contract-designer`
 - `goal-constraints`: `goal-domain-process-mapper`, `goal-freedom-policy-designer`
 - `goal-execution-design`: `goal-decomposer`, `goal-verifier-designer`
 - `goal-runtime-policy`: `goal-state-ledger-architect`, `goal-steering-policy-designer`
@@ -144,6 +146,15 @@ The first complete draft is created after `goal-handoff`. Before finalizing, run
 - Do not keep all detailed intermediate outputs in root context; keep summaries and file paths unless detail is needed for validation or repair.
 - Do not decompose mentioned topics directly. First classify the real goal object, completion surface, owning systems, and decomposition basis with `goal-object-modeler`.
 - Treat user exclusions as surface-specific. Excluding an implementation surface does not automatically exclude runtime, policy, audit, or contract surfaces that are required for the goal object to be complete.
+- Preserve capability contracts. A low-priority or excluded surface may still be
+  an evidence source for required capabilities; downstream agents must not
+  silently convert it into a capability exclusion.
+- Do not allow agent-decided deferral of completion-critical capabilities.
+  Deferral must be either user-approved or proven not applicable with evidence.
+- Use Markdown for the final executable contract and YAML for machine-readable
+  intermediate contracts. YAML alone is insufficient for handoff because future
+  executors need narrative intent, rationale, and human-readable ambiguity
+  resolution alongside structured fields.
 - Do not pass incomplete specialist output to the next stage.
 - If a required field is missing, repair that specialist section before continuing.
 - Do not weaken hard constraints during assembly.

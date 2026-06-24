@@ -24,6 +24,7 @@ Do not perform final review here. Review belongs to `goal-review`.
 ```yaml
 final_goal: required
 goal_object_model: required
+scope_contract: required
 aggregate_goal: required
 stories: required
 verifier_plan: required
@@ -41,7 +42,7 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/05-handoff.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/10-execution-handoff.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml
 ```
 
 The unit output must include:
@@ -60,6 +61,7 @@ unit_result:
   downstream_contract:
     execution_handoff: required
     goal_invocation_prompt: required
+    scope_contract: required
   repair_instructions: []
 ```
 
@@ -68,6 +70,7 @@ unit_result:
 - Write prompts the user can paste into a new goal execution turn.
 - Include a path-based prompt and an inline fallback prompt.
 - Require loop documentation in the execution handoff.
+- Include the scope contract summary in both path-based and inline prompts.
 - Forbid final completion until the quality gate is `APPROVE + CLEAR`.
 - Do not critique your own handoff; leave that to `goal-review`.
 

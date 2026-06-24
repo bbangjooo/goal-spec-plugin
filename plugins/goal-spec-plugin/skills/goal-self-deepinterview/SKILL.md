@@ -18,6 +18,7 @@ raw_user_objective: required
 source_material: optional
 draft_goal_spec: required
 specialist_outputs: required
+scope_contract: required
 ```
 
 ## Output
@@ -34,6 +35,13 @@ self_deepinterview:
     constraint_fit: 0.0
     success_fit: 0.0
     autonomy_fit: 0.0
+    scope_contract_fit: 0.0
+  unit_micro_interviews:
+    framing: []
+    constraints: []
+    execution_design: []
+    runtime_policy: []
+    handoff: []
   resolved_internally: []
   unresolved_questions: []
   user_question:
@@ -53,6 +61,9 @@ Borrow the discipline of OMX deep-interview:
 - Prefer evidence and source text over vibes.
 - Distinguish discoverable facts from human decisions.
 - Do not keep interviewing to polish wording once execution would not materially change.
+- Interview each grouped unit briefly for semantic drift, but do not run a full
+  deepinterview agent per unit by default. Unit-level deep interviews are too
+  expensive unless a specific unit can materially change the final goal.
 
 Adaptation for goal specs:
 
@@ -71,6 +82,8 @@ Adaptation for goal specs:
    - `constraint_fit`: hard rules and domain constraints.
    - `success_fit`: completion and evidence criteria.
    - `autonomy_fit`: freedom zones, required process, and escalation points.
+   - `scope_contract_fit`: preservation of completion-critical capabilities,
+     surface/capability distinctions, required matrices, and deferral authority.
 3. Run one pressure pass:
    - What assumption did the draft make that the user did not state?
    - What did the draft omit that the user emphasized?
@@ -79,10 +92,27 @@ Adaptation for goal specs:
    - Did the draft mistake user-mentioned topics for the primary goal object?
    - Does the draft's completion surface match what would actually make the user's goal true?
    - Did any excluded surface get interpreted too broadly, removing runtime, policy, audit, or contract work that still belongs to the goal?
-4. If the answer is recoverable from source material, add it to `resolved_internally`.
-5. If not recoverable and it changes execution materially, set `USER_DECISION_NEEDED` and ask one concise question with 2-4 concrete options.
-6. If revisions are needed but no user decision is needed, set `REVISE` and write concrete `revision_instructions`.
-7. If all dimensions are at or above threshold and no material ambiguity remains, set `ALIGNED`.
+   - Did any completion-critical axis from the user's wording become audit-only,
+     follow-up-only, broad-family-only, or agent-deferred?
+   - Does every required parity or coverage matrix have row sources, per-row
+     evidence, allowed statuses, and reject conditions?
+   - Could an executor satisfy this spec with a result smaller than the user's
+     likely expectation?
+4. Run unit-level micro-interviews:
+   - `framing`: Did intent, final goal, object model, and scope contract preserve
+     the same desired end state?
+   - `constraints`: Did required processes and freedom policy preserve the scope
+     contract without over-constraining optional surfaces?
+   - `execution_design`: Do stories and verifier checks cover every
+     completion-critical capability and required matrix?
+   - `runtime_policy`: Will state, ledger, loop docs, and steering preserve
+     capability status and deferral decisions?
+   - `handoff`: Does the copyable prompt include enough scope-contract detail to
+     prevent a smaller legal interpretation?
+5. If the answer is recoverable from source material, add it to `resolved_internally`.
+6. If not recoverable and it changes execution materially, set `USER_DECISION_NEEDED` and ask one concise question with 2-4 concrete options.
+7. If revisions are needed but no user decision is needed, set `REVISE` and write concrete `revision_instructions`.
+8. If all dimensions are at or above threshold and no material ambiguity remains, set `ALIGNED`.
 
 ## User Question Rule
 
@@ -108,4 +138,4 @@ If the runtime has native structured input, use it. Otherwise ask exactly one co
 
 ## Quality Bar
 
-The final goal spec should feel like a faithful operationalization of the user's natural-language intent, not merely a well-formed plan. A future executor should be able to explain why each story, guardrail, freedom zone, and completion gate follows from the user's words or from a clearly recorded internal resolution.
+The final goal spec should feel like a faithful operationalization of the user's natural-language intent, not merely a well-formed plan. A future executor should be able to explain why each story, guardrail, freedom zone, completion gate, and capability contract follows from the user's words or from a clearly recorded internal resolution.

@@ -28,6 +28,7 @@ source_material: optional
 draft_goal_spec: required
 specialist_outputs: required
 goal_object_model: required
+scope_contract: required
 artifact_paths:
   intermediate_dir: required
 ```
@@ -38,8 +39,8 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/11-self-deepinterview.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/12-critic-verdict.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml
 ```
 
 The unit output must include:
@@ -65,6 +66,11 @@ unit_result:
 - Treat this as checker work, not maker work.
 - Return `REVISE` if the draft fails intent alignment, evidence coverage,
   process consistency, loop documentation, handoff safety, or completion gates.
+- Return `REVISE` if any grouped unit narrows, omits, weakens, or silently
+  defers a completion-critical capability from the scope contract.
+- Run unit-level micro-interviews inside `goal-self-deepinterview`; do not spawn
+  separate self-deepinterview agents for every unit unless a unit is materially
+  ambiguous after review.
 - Return `USER_DECISION_NEEDED` only when multiple plausible interpretations
   materially change stories, guardrails, freedom policy, or completion gates.
 - Ask at most one concise option-based question.

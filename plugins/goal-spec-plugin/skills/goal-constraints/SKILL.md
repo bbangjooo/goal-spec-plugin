@@ -27,6 +27,7 @@ intent_summary: required
 domain: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 authority_boundaries: required
 source_material: optional
 domain_references: optional
@@ -40,8 +41,8 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/02-constraints.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/04-domain-process.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/05-freedom-policy.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/05-domain-process.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/06-freedom-policy.yaml
 ```
 
 The unit output must include:
@@ -73,6 +74,9 @@ unit_result:
 - Keep optional best practices as reference-only guidance.
 - Preserve high freedom inside stages while keeping hard gates explicit.
 - Every hard constraint must be externally checkable.
+- Preserve the scope contract: low-priority surfaces may remain evidence
+  sources, and completion-critical capabilities may not be downgraded to
+  reference-only guidance or agent-deferred work.
 
 ## Quality Bar
 

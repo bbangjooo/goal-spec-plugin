@@ -15,6 +15,7 @@ Split the already-designed final goal into story goals that can be executed, che
 intent_summary: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 required_processes: required
 freedom_policy: required
 guardrail_candidates: required
@@ -50,6 +51,14 @@ stories:
 - Preserve the final goal; do not reinterpret or narrow it.
 - Decompose according to `goal_object_model.decomposition_basis`, not merely according to the user's mentioned topics.
 - Stories must cover the declared completion surface and required capability chain. If a mentioned topic is not itself a completion surface, make it a sub-part of the relevant capability/workflow/artifact story.
+- Stories must cover every completion-critical capability contract. Do not hide
+  multiple concrete required items under one broad family label unless a parity
+  or coverage matrix requires per-item evidence.
+- If the scope contract requires a parity or coverage matrix, create a story or
+  success criterion that produces and verifies that matrix.
+- Do not mark completion-critical capabilities as follow-up, audit-only, or
+  deferred unless the scope contract permits agent deferral or records a
+  user-approved deferral path.
 - Add a story or success criterion for each `missing_surface_risks` item unless the risk is explicitly superseded with rationale.
 - Do not design verifier checks beyond naming evidence requirements.
 

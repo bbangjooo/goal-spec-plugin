@@ -15,6 +15,7 @@ Design maker/checker separation so goal completion depends on evidence, not self
 stories: required
 final_goal: required
 goal_object_model: required
+scope_contract: required
 hard_constraints: required
 required_sequences: required
 domain_failure_modes: required
@@ -43,6 +44,13 @@ verifier_plan:
 - Verification failures must specify what gets written back to state or ledger.
 - Aggregate checks must prove the `goal_object_model.completion_surface`, not just completion of named implementation topics.
 - Reject completion when the stories satisfy mentioned topics but leave a required owning system, capability-chain step, audit/provenance surface, runtime workflow, or policy surface uncovered.
+- Aggregate checks must prove every `scope_contract.capability_contracts`
+  obligation using evidence, not merely presence in a plan.
+- Reject completion when a completion-critical capability is audit-only,
+  follow-up-only, broadly grouped without per-item evidence, or deferred without
+  user approval.
+- Required parity or coverage matrices must reject missing rows, missing
+  evidence, and row statuses outside the allowed status set.
 
 ## Quality Bar
 
