@@ -1,6 +1,6 @@
 ---
 name: goal-spec
-description: Use when converting an objective into a single goal-executable spec file by orchestrating specialist goal-spec skills for intent extraction, final goal design, goal object modeling, domain process mapping, freedom policy, decomposition, verification, state/ledger, steering, handoff, and critic review.
+description: Use when converting an objective into a single goal-executable spec file by orchestrating separate grouped goal-spec agents for framing, constraints, execution design, runtime policy, handoff, and review.
 ---
 
 # Goal Spec
@@ -9,7 +9,7 @@ description: Use when converting an objective into a single goal-executable spec
 
 Use this skill to produce one complete spec that can be handed to a Codex goal or OMX ultragoal execution flow. The spec must be executable, verifier-gated, and durable: it should preserve intent, story goals, required process, freedom zones, guardrails, state/ledger rules, steering rules, and completion gates in one file.
 
-This skill is an orchestrator. It should not rely on one broad pass. It routes the objective through specialist skills or equivalent specialist agent roles, checks their outputs, assembles the final contract, and runs a final critic pass.
+This skill is the root orchestrator. It should not rely on one broad pass and should not directly perform all specialist work when subagents are available. It routes the objective through grouped separate agents, checks their compact outputs, assembles the final contract, and sends the draft to an independent review agent.
 
 ## Required Output
 
@@ -41,6 +41,13 @@ For each generated spec, create a slug-specific subdirectory and write specialis
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/
+  units/
+    01-framing.yaml
+    02-constraints.yaml
+    03-execution-design.yaml
+    04-runtime-policy.yaml
+    05-handoff.yaml
+    06-review.yaml
   01-intent.yaml
   02-final-goal.yaml
   03-goal-object-model.yaml
@@ -74,44 +81,52 @@ The final spec file must contain:
 3. `Final Goal`
 4. `Goal Object Model`
 5. `Aggregate Goal`
-6. `Specialist Trace`
-7. `Story Goals`
-8. `Required Process`
-9. `Freedom Policy`
-10. `Guardrails`
-11. `Verifier Plan`
-12. `State And Ledger`
-13. `Steering Policy`
-14. `Checkpoint Policy`
-15. `Loop Documentation Policy`
-16. `Quality Gate`
-17. `Goal Invocation Prompt`
-18. `Execution Handoff`
-19. `Self Deepinterview`
-20. `Critic Verdict`
+6. `Agent Trace`
+7. `Specialist Trace`
+8. `Story Goals`
+9. `Required Process`
+10. `Freedom Policy`
+11. `Guardrails`
+12. `Verifier Plan`
+13. `State And Ledger`
+14. `Steering Policy`
+15. `Checkpoint Policy`
+16. `Loop Documentation Policy`
+17. `Quality Gate`
+18. `Goal Invocation Prompt`
+19. `Execution Handoff`
+20. `Self Deepinterview`
+21. `Critic Verdict`
 
 Read `references/goal-spec-file-template.md` for the canonical file template.
 
-## Specialist Pipeline
+## Agent Pipeline
 
-Run the work in this order. If actual separate skill invocation is unavailable in the current surface, simulate each role explicitly and keep the same input/output contracts.
+When subagents are available, run each grouped stage as a separate bounded agent in this fixed order:
 
-1. `goal-intent-extractor`
-2. `goal-final-goal-designer`
-3. `goal-object-modeler`
-4. `goal-domain-process-mapper`
-5. `goal-freedom-policy-designer`
-6. `goal-decomposer`
-7. `goal-verifier-designer`
-8. `goal-state-ledger-architect`
-9. `goal-steering-policy-designer`
-10. `goal-handoff-writer`
-11. `goal-self-deepinterview`
-12. `goal-spec-critic`
+1. `goal-framing`
+2. `goal-constraints`
+3. `goal-execution-design`
+4. `goal-runtime-policy`
+5. `goal-handoff`
+6. `goal-review`
 
-Read `references/io-contracts.md` for each specialist's required input/output schema.
+Each grouped agent executes its internal substeps in one agent context and writes both a compact unit output and detailed specialist outputs. The root orchestrator must read compact unit outputs and file paths by default. Open detailed specialist outputs only for schema validation, inconsistency repair, final assembly, or review-driven revision.
 
-After each specialist stage, write that stage's raw structured output to the matching file in `.goal-specs/intermediate/YYYY-MM-DD-<slug>/`. The final spec must summarize those outputs and link to the intermediate files.
+Use the leaf specialist skills as internal substep contracts:
+
+- `goal-framing`: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`
+- `goal-constraints`: `goal-domain-process-mapper`, `goal-freedom-policy-designer`
+- `goal-execution-design`: `goal-decomposer`, `goal-verifier-designer`
+- `goal-runtime-policy`: `goal-state-ledger-architect`, `goal-steering-policy-designer`
+- `goal-handoff`: `goal-handoff-writer`
+- `goal-review`: `goal-self-deepinterview`, `goal-spec-critic`
+
+Fallback: if the current runtime cannot spawn subagents, simulate the six grouped agents sequentially, but still keep the same unit outputs, specialist outputs, file paths, and trace.
+
+Read `references/io-contracts.md` for each grouped agent and internal specialist input/output schema.
+
+After each grouped agent finishes, validate its unit output before moving to the next grouped agent. The final spec must summarize unit outputs, specialist outputs, and file paths.
 
 The final assistant response after creating the spec must include:
 
@@ -120,11 +135,13 @@ The final assistant response after creating the spec must include:
 - A shorter path-based prompt when the executor can read the workspace file.
 - An inline fallback prompt when the executor cannot access the file path.
 
-The first complete draft is created after `goal-handoff-writer`. Before running the final critic, run `goal-self-deepinterview` to audit whether that draft faithfully operationalizes the user's natural-language intent. If it returns `REVISE`, update the relevant specialist sections and rerun self-deepinterview. If it returns `USER_DECISION_NEEDED`, ask one concise option-based question and apply the answer before continuing.
+The first complete draft is created after `goal-handoff`. Before finalizing, run `goal-review` as a separate checker agent. If it returns `REVISE`, update the relevant upstream grouped agent section and rerun the affected agent(s), then rerun `goal-review`. If it returns `USER_DECISION_NEEDED`, ask one concise option-based question and apply the answer before continuing.
 
 ## Orchestrator Rules
 
 - Preserve traceability from raw objective to aggregate goal, story goals, verifier checks, and final handoff.
+- Prefer separate grouped agents over a flat 12-agent pipeline to reduce root context growth.
+- Do not keep all detailed intermediate outputs in root context; keep summaries and file paths unless detail is needed for validation or repair.
 - Do not decompose mentioned topics directly. First classify the real goal object, completion surface, owning systems, and decomposition basis with `goal-object-modeler`.
 - Treat user exclusions as surface-specific. Excluding an implementation surface does not automatically exclude runtime, policy, audit, or contract surfaces that are required for the goal object to be complete.
 - Do not pass incomplete specialist output to the next stage.
@@ -132,8 +149,8 @@ The first complete draft is created after `goal-handoff-writer`. Before running 
 - Do not weaken hard constraints during assembly.
 - Do not allow maker self-report to count as completion evidence.
 - Do not allow `update_goal complete` until all active stories are complete or superseded and the final quality gate is `APPROVE + CLEAR`.
-- Do not send a draft to `goal-spec-critic` until `goal-self-deepinterview` returns `ALIGNED` or its required revisions/user decision have been applied.
-- If the critic returns `REVISE`, patch the relevant specialist section and rerun the critic pass before finalizing.
+- Do not finalize until `goal-review` returns `APPROVE` or its required revisions/user decision have been applied.
+- Keep `goal-review` separate from `goal-handoff`; handoff is maker work, review is checker work.
 
 ## Freedom Policy Default
 

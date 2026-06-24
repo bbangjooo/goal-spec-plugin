@@ -1,7 +1,7 @@
 {
   "name": "goal-spec-plugin",
-  "version": "0.1.2",
-  "description": "Goal-spec orchestration skills for creating durable, verifier-gated, goal-executable specs.",
+  "version": "0.1.3",
+  "description": "Grouped-agent goal-spec orchestration skills for creating durable, verifier-gated, goal-executable specs.",
   "author": {
     "name": "bbangjo"
   },
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Goal Spec",
     "shortDescription": "Create goal-executable spec files.",
-    "longDescription": "Goal Spec turns ambiguous objectives into durable, verifier-gated execution contracts. It orchestrates specialist skills for intent extraction, final goal design, goal object modeling, process mapping, freedom policy, decomposition, verification, state and ledger design, steering, self-deepinterview alignment, final critique, and goal handoff.",
+    "longDescription": "Goal Spec turns ambiguous objectives into durable, verifier-gated execution contracts. It orchestrates grouped separate agents for framing, constraints, execution design, runtime policy, handoff, and review, while preserving internal specialist outputs for traceability.",
     "developerName": "bbangjo",
     "category": "Productivity",
     "capabilities": [

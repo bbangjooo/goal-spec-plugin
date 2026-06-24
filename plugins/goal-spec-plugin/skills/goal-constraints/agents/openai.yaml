@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Constraints"
+  short_description: "Map process and freedom policy"
+  default_prompt: "Use $goal-constraints to map required process and autonomy boundaries for this framed goal."

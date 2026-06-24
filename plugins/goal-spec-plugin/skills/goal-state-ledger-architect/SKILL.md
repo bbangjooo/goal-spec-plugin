@@ -27,6 +27,13 @@ state_and_ledger:
   artifacts:
     spec_file: ".goal-specs/specs/YYYY-MM-DD-<slug>-goal-spec.md"
     intermediate_dir: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/"
+    unit_outputs:
+      framing: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/01-framing.yaml"
+      constraints: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/02-constraints.yaml"
+      execution_design: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/03-execution-design.yaml"
+      runtime_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy.yaml"
+      handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/05-handoff.yaml"
+      review: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml"
     intermediate_outputs:
       intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"
@@ -84,6 +91,7 @@ state_and_ledger:
 - Failure writeback must be specific enough to influence the next iteration.
 - Evidence should be indexable by story id.
 - The single goal spec file is itself a state artifact and must be listed.
+- Unit outputs must be listed because the root orchestrator reads them before detailed specialist outputs.
 - The goal object model must be listed as an intermediate artifact because it defines the completion surface that later stories and verifiers must preserve.
 - Canonical goal-spec documents live under the project root's `.goal-specs/`; `.omx/ultragoal` paths are optional runtime mirrors only.
 

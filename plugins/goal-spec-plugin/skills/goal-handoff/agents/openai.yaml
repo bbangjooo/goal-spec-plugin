@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Handoff"
+  short_description: "Write goal execution handoff"
+  default_prompt: "Use $goal-handoff to write execution handoff instructions and goal invocation prompts."

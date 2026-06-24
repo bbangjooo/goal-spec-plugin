@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Runtime Policy"
+  short_description: "Design runtime state policy"
+  default_prompt: "Use $goal-runtime-policy to design state, ledger, loop documentation, and steering rules."

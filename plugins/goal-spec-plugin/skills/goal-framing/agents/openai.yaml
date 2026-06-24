@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Framing"
+  short_description: "Frame goals before constraints"
+  default_prompt: "Use $goal-framing to frame raw intent into a final goal and goal object model."

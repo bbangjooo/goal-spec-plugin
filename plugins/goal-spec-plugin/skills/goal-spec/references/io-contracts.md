@@ -1,6 +1,90 @@
-# Goal Spec Specialist IO Contracts
+# Goal Spec IO Contracts
 
-Use these contracts when orchestrating specialist skills or simulating specialist roles in one session. Required fields must be present before the next stage starts.
+Use these contracts when orchestrating grouped agents and their internal specialist substeps. Required fields must be present before the next stage starts.
+
+## Root Agent Pipeline
+
+When subagents are available, root `goal-spec` must call these grouped agents as separate bounded agents:
+
+```yaml
+agent_pipeline:
+  - goal-framing
+  - goal-constraints
+  - goal-execution-design
+  - goal-runtime-policy
+  - goal-handoff
+  - goal-review
+```
+
+The root orchestrator reads compact unit outputs by default and opens detailed specialist outputs only for validation, repair, final assembly, or review-driven revision.
+
+### goal-framing
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/01-framing.yaml"
+specialist_outputs:
+  intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
+  final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"
+  goal_object_model: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/03-goal-object-model.yaml"
+```
+
+### goal-constraints
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/02-constraints.yaml"
+specialist_outputs:
+  domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-domain-process.yaml"
+  freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-freedom-policy.yaml"
+```
+
+### goal-execution-design
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/03-execution-design.yaml"
+specialist_outputs:
+  decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-decomposition.yaml"
+  verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-verifier-plan.yaml"
+```
+
+### goal-runtime-policy
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy.yaml"
+specialist_outputs:
+  state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-state-ledger.yaml"
+  steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-steering-policy.yaml"
+```
+
+### goal-handoff
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/05-handoff.yaml"
+specialist_outputs:
+  execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-execution-handoff.yaml"
+```
+
+### goal-review
+
+Writes:
+
+```yaml
+unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml"
+specialist_outputs:
+  self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-self-deepinterview.yaml"
+  critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-critic-verdict.yaml"
+```
+
+## Internal Specialist Contracts
 
 ## 1. goal-intent-extractor
 
@@ -220,6 +304,13 @@ state_and_ledger:
   artifacts:
     spec_file: ".goal-specs/specs/YYYY-MM-DD-<slug>-goal-spec.md"
     intermediate_dir: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/"
+    unit_outputs:
+      framing: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/01-framing.yaml"
+      constraints: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/02-constraints.yaml"
+      execution_design: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/03-execution-design.yaml"
+      runtime_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy.yaml"
+      handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/05-handoff.yaml"
+      review: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml"
     intermediate_outputs:
       intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"

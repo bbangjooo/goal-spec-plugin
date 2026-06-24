@@ -94,6 +94,17 @@ aggregate_goal:
     - "Quality gate is APPROVE + CLEAR."
 ```
 
+## Agent Trace
+
+| Stage | Agent | Internal Substeps | Status | Unit Output |
+| --- | --- | --- | --- | --- |
+| 1 | goal-framing | intent, final goal, goal object | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/01-framing.yaml` |
+| 2 | goal-constraints | domain process, freedom policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/02-constraints.yaml` |
+| 3 | goal-execution-design | decomposition, verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/03-execution-design.yaml` |
+| 4 | goal-runtime-policy | state/ledger, steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/04-runtime-policy.yaml` |
+| 5 | goal-handoff | execution handoff, invocation prompt | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/05-handoff.yaml` |
+| 6 | goal-review | self-deepinterview, critic | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/06-review.yaml` |
+
 ## Specialist Trace
 
 | Stage | Specialist | Output | Status | Intermediate File |
@@ -174,6 +185,13 @@ state_and_ledger:
   artifacts:
     spec_file: "<path>"
     intermediate_dir: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/"
+    unit_outputs:
+      framing: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/01-framing.yaml"
+      constraints: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/02-constraints.yaml"
+      execution_design: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/03-execution-design.yaml"
+      runtime_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/04-runtime-policy.yaml"
+      handoff: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/05-handoff.yaml"
+      review: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/units/06-review.yaml"
     intermediate_outputs:
       intent: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/01-intent.yaml"
       final_goal: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/02-final-goal.yaml"

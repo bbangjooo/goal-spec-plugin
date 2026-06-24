@@ -2,20 +2,26 @@
 
 Goal Spec is a Codex plugin marketplace for turning ambiguous objectives into durable, verifier-gated, goal-executable specs.
 
-The main entry point is `$goal-spec`. It orchestrates specialist skills that each own one narrow part of the goal-spec pipeline:
+The main entry point is `$goal-spec`. It orchestrates grouped agents to keep the root context small:
 
-1. `goal-intent-extractor`
-2. `goal-final-goal-designer`
-3. `goal-object-modeler`
-4. `goal-domain-process-mapper`
-5. `goal-freedom-policy-designer`
-6. `goal-decomposer`
-7. `goal-verifier-designer`
-8. `goal-state-ledger-architect`
-9. `goal-steering-policy-designer`
-10. `goal-handoff-writer`
-11. `goal-self-deepinterview`
-12. `goal-spec-critic`
+1. `goal-framing`
+2. `goal-constraints`
+3. `goal-execution-design`
+4. `goal-runtime-policy`
+5. `goal-handoff`
+6. `goal-review`
+
+Each grouped agent runs its internal substeps in one isolated context and writes compact unit outputs plus detailed specialist outputs under `.goal-specs/intermediate/`.
+
+Internal specialist substeps remain available as skills:
+
+```text
+goal-intent-extractor, goal-final-goal-designer, goal-object-modeler,
+goal-domain-process-mapper, goal-freedom-policy-designer,
+goal-decomposer, goal-verifier-designer,
+goal-state-ledger-architect, goal-steering-policy-designer,
+goal-handoff-writer, goal-self-deepinterview, goal-spec-critic
+```
 
 ## Install
 
@@ -52,7 +58,7 @@ By default, `$goal-spec` writes project-local artifacts under `.goal-specs/`:
 ```text
 .goal-specs/
   specs/                 # final goal-executable specs
-  intermediate/          # specialist outputs used to build final specs
+  intermediate/          # grouped unit outputs and specialist outputs
   references/            # user-provided or extracted reference notes
   ledger/                # evidence indexes, loop docs, steering logs, resumable state
 ```

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Review"
+  short_description: "Review goal spec independently"
+  default_prompt: "Use $goal-review to run independent self-deepinterview and critic review on this goal spec."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Execution Design"
+  short_description: "Design stories and verifiers"
+  default_prompt: "Use $goal-execution-design to decompose this goal and design verifier checks."

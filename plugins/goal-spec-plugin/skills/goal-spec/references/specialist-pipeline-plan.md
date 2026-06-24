@@ -1,6 +1,6 @@
-# Specialist Pipeline Refactor Plan
+# Grouped Agent Pipeline Plan
 
-This plan upgrades `goal-spec` from a single all-purpose writer into an orchestrator for specialized goal-spec skills or agents. The goal is reproducible quality: the same objective should produce a similarly complete executable goal contract even when run by different agents.
+This plan upgrades `goal-spec` from a single all-purpose writer into a root orchestrator for grouped separate agents. The goal is reproducible quality without root-context explosion: the same objective should produce a similarly complete executable goal contract while the root only carries compact summaries and file paths.
 
 ## Target Shape
 
@@ -15,28 +15,36 @@ Target shape:
 
 ```text
 goal-spec
-  -> goal-intent-extractor
-  -> goal-final-goal-designer
-  -> goal-object-modeler
-  -> goal-domain-process-mapper
-  -> goal-freedom-policy-designer
-  -> goal-decomposer
-  -> goal-verifier-designer
-  -> goal-state-ledger-architect
-  -> goal-steering-policy-designer
-  -> goal-handoff-writer
-  -> goal-self-deepinterview
-  -> goal-spec-critic
+  -> goal-framing
+      -> goal-intent-extractor
+      -> goal-final-goal-designer
+      -> goal-object-modeler
+  -> goal-constraints
+      -> goal-domain-process-mapper
+      -> goal-freedom-policy-designer
+  -> goal-execution-design
+      -> goal-decomposer
+      -> goal-verifier-designer
+  -> goal-runtime-policy
+      -> goal-state-ledger-architect
+      -> goal-steering-policy-designer
+  -> goal-handoff
+      -> goal-handoff-writer
+  -> goal-review
+      -> goal-self-deepinterview
+      -> goal-spec-critic
   -> final contract
 ```
 
-The orchestrator owns routing, schema enforcement, traceability, revision loops, and final assembly. Specialists own one narrow judgment each.
+The root orchestrator owns grouped-agent routing, schema enforcement, traceability, revision loops, and final assembly. Grouped agents own a coherent slice of the pipeline and execute their internal specialist substeps in one agent context. Leaf specialists remain the internal role contracts.
 
 ## Design Principle
 
 Do not rely on one agent being broadly wise. Make quality emerge from:
 
 - narrow roles
+- grouped separate agents at the root level
+- compact unit outputs to limit root context growth
 - explicit input/output schemas
 - a stable final goal before decomposition
 - explicit goal object modeling before process mapping
@@ -45,7 +53,45 @@ Do not rely on one agent being broadly wise. Make quality emerge from:
 - traceability from user intent to story goals and checks
 - structured revision loops when a specialist output is incomplete
 
-## Specialist Roles
+## Grouped Agent Roles
+
+### 1. goal-framing
+
+Internal substeps: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`.
+
+Writes `units/01-framing.yaml`, `01-intent.yaml`, `02-final-goal.yaml`, and `03-goal-object-model.yaml`.
+
+### 2. goal-constraints
+
+Internal substeps: `goal-domain-process-mapper`, `goal-freedom-policy-designer`.
+
+Writes `units/02-constraints.yaml`, `04-domain-process.yaml`, and `05-freedom-policy.yaml`.
+
+### 3. goal-execution-design
+
+Internal substeps: `goal-decomposer`, `goal-verifier-designer`.
+
+Writes `units/03-execution-design.yaml`, `06-decomposition.yaml`, and `07-verifier-plan.yaml`.
+
+### 4. goal-runtime-policy
+
+Internal substeps: `goal-state-ledger-architect`, `goal-steering-policy-designer`.
+
+Writes `units/04-runtime-policy.yaml`, `08-state-ledger.yaml`, and `09-steering-policy.yaml`.
+
+### 5. goal-handoff
+
+Internal substep: `goal-handoff-writer`.
+
+Writes `units/05-handoff.yaml` and `10-execution-handoff.yaml`.
+
+### 6. goal-review
+
+Internal substeps: `goal-self-deepinterview`, `goal-spec-critic`.
+
+Writes `units/06-review.yaml`, `11-self-deepinterview.yaml`, and `12-critic-verdict.yaml`.
+
+## Internal Specialist Roles
 
 ### 1. goal-intent-extractor
 
@@ -545,22 +591,23 @@ Quality bar:
 
 The orchestrator must:
 
-1. Run specialists in the fixed order unless a prior output proves a stage is not applicable.
-2. Preserve each stage output in the final trace.
-3. Validate every specialist output against its schema before moving on.
-4. Send incomplete outputs back to the same specialist with concrete repair instructions.
-5. Assemble the final prose and YAML contract.
-6. Ensure the final goal and goal object model appear explicitly in the final contract before decomposition details.
-7. Run `goal-self-deepinterview` after the first complete draft.
-8. Apply self-deepinterview revisions or ask its one required user decision before critic review.
-9. Run `goal-spec-critic`.
-10. Apply critic revisions or clearly label unresolved gaps.
-11. Produce a final execution handoff.
+1. Run grouped agents in the fixed order unless a prior output proves a stage is not applicable.
+2. Use separate subagents for grouped agents whenever the runtime supports them.
+3. Preserve each grouped agent output and each internal specialist output in the final trace.
+4. Validate each compact unit output before moving on.
+5. Open detailed specialist outputs only for schema validation, inconsistency repair, final assembly, or review-driven revision.
+6. Send incomplete outputs back to the grouped agent that owns the slice, with concrete repair instructions.
+7. Assemble the final prose and YAML contract.
+8. Ensure the final goal and goal object model appear explicitly in the final contract before decomposition details.
+9. Run `goal-review` as an independent checker after the first complete draft.
+10. Apply review revisions or ask its one required user decision before finalizing.
+11. Produce a final execution handoff and goal invocation prompt.
 
 The orchestrator must not:
 
 - silently invent missing verifier evidence
-- collapse all specialist roles into one broad plan
+- collapse all grouped agent roles into one broad plan when subagents are available
+- keep every detailed specialist output in root context by default
 - weaken hard constraints during handoff
 - let quality gate checks become optional
 - ask the user for decisions that are already covered by freedom zones
@@ -568,26 +615,26 @@ The orchestrator must not:
 ## Revision Loop
 
 ```text
-specialist output
+grouped agent output
   -> schema check
-  -> if missing required fields, return to same specialist
-  -> if semantically inconsistent, return to the upstream specialist that introduced the inconsistency
-  -> after assembly, critic review
-  -> if critic says REVISE, patch the relevant specialist section
-  -> rerun critic
+  -> if missing required fields, return to same grouped agent
+  -> if semantically inconsistent, return to the upstream grouped agent that owns the inconsistency
+  -> after assembly, goal-review
+  -> if review says REVISE, patch the relevant grouped-agent section
+  -> rerun goal-review
   -> final contract
 ```
 
 Examples:
 
-- Story has no evidence requirement: return to `goal-decomposer`.
-- Aggregate or story goals drift away from the final goal: return to `goal-decomposer`.
-- Stories cover mentioned topics but not the actual completion surface: return to `goal-object-modeler`, then `goal-decomposer`.
-- Guardrail has no verifier check: return to `goal-verifier-designer`.
-- Required process conflicts with dependency order: return to `goal-decomposer` after consulting `goal-domain-process-mapper`.
-- Handoff allows final completion too early: return to `goal-handoff-writer`.
-- Contract forces unnecessary process: return to `goal-freedom-policy-designer`.
-- Self-deepinterview finds wrong intent fit: return to the specialist section that introduced the misalignment, then rerun self-deepinterview.
+- Story has no evidence requirement: return to `goal-execution-design`.
+- Aggregate or story goals drift away from the final goal: return to `goal-execution-design`.
+- Stories cover mentioned topics but not the actual completion surface: return to `goal-framing`, then `goal-execution-design`.
+- Guardrail has no verifier check: return to `goal-execution-design`.
+- Required process conflicts with dependency order: return to `goal-execution-design` after consulting `goal-constraints`.
+- Handoff allows final completion too early: return to `goal-handoff`.
+- Contract forces unnecessary process: return to `goal-constraints`.
+- Self-deepinterview finds wrong intent fit: return to the grouped agent that introduced the misalignment, then rerun `goal-review`.
 
 ## Implementation Plan
 
@@ -595,17 +642,37 @@ Examples:
 
 - Rewrite `goal-spec/SKILL.md` so it is a router and assembler.
 - Move detailed direct-writing guidance into references.
-- Add a `Specialist Pipeline` section that references this plan.
+- Add an `Agent Pipeline` section that references this plan.
 
 ### Phase 2: Add IO Contracts
 
 - Create `references/io-contracts.md`.
-- Put every specialist input/output schema in one canonical file.
+- Put every grouped agent and internal specialist input/output schema in one canonical file.
 - Require orchestrator to validate outputs against that file.
 
-### Phase 3: Create Specialist Skills
+### Phase 3: Create Grouped Agent Skills
 
-Create these folders under `~/.codex/skills/`:
+Create these folders under `~/.codex/skills/` and the plugin skill directory:
+
+- `goal-framing`
+- `goal-constraints`
+- `goal-execution-design`
+- `goal-runtime-policy`
+- `goal-handoff`
+- `goal-review`
+
+Each grouped agent skill should contain:
+
+- its internal substeps
+- required input schema
+- required unit output schema
+- required files to write
+- quality bar
+- repair expectations
+
+### Phase 4: Keep Internal Specialist Skills
+
+Keep these folders under `~/.codex/skills/` and the plugin skill directory as internal substep contracts:
 
 - `goal-intent-extractor`
 - `goal-final-goal-designer`
@@ -620,7 +687,7 @@ Create these folders under `~/.codex/skills/`:
 - `goal-self-deepinterview`
 - `goal-spec-critic`
 
-Each specialist skill should contain:
+Each internal specialist skill should contain:
 
 - a narrow trigger description
 - one responsibility
@@ -629,19 +696,19 @@ Each specialist skill should contain:
 - quality bar
 - common failure modes
 
-### Phase 4: Add Final Contract Template
+### Phase 5: Add Final Contract Template
 
 - Rename or replace `references/spec-template.md` with `references/final-spec-template.md`.
-- Include slots for every specialist output.
+- Include slots for every grouped agent output and every specialist output.
 - Include a traceability table from user intent to story to verifier to evidence.
 
-### Phase 5: Add Critic Checklist
+### Phase 6: Add Critic Checklist
 
 - Create `references/critic-checklist.md`.
 - Make it the mandatory final gate.
 - Include both under-specification and over-constraint checks.
 
-### Phase 6: Validate
+### Phase 7: Validate
 
 - Run skill validation on all new skill folders.
 - Smoke test with at least two domains:
@@ -654,8 +721,11 @@ Each specialist skill should contain:
 The refactor is complete when:
 
 - The orchestrator no longer acts as the only writer.
-- Every specialist has a clear role and schema.
+- The root orchestrator calls grouped agents separately when subagents are available.
+- Every grouped agent has a clear role, compact unit output, and schema.
+- Every internal specialist has a clear role and schema.
 - The final contract includes all specialist outputs.
+- The final contract includes all grouped agent outputs.
 - The final goal is explicit before decomposition and downstream stages preserve it.
 - The goal object model is explicit and downstream stories reflect its completion surface.
 - The critic can block incomplete or unsafe contracts.
