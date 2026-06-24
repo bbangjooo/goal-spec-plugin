@@ -58,9 +58,10 @@ For each generated spec, create a slug-specific subdirectory and write specialis
   08-verifier-plan.yaml
   09-state-ledger.yaml
   10-steering-policy.yaml
-  11-execution-handoff.yaml
-  12-self-deepinterview.yaml
-  13-critic-verdict.yaml
+  11-execution-discipline.yaml
+  12-execution-handoff.yaml
+  13-self-deepinterview.yaml
+  14-critic-verdict.yaml
 ```
 
 Reference notes that future goal execution should consult go under:
@@ -92,13 +93,14 @@ The final spec file must contain:
 13. `Verifier Plan`
 14. `State And Ledger`
 15. `Steering Policy`
-16. `Checkpoint Policy`
-17. `Loop Documentation Policy`
-18. `Quality Gate`
-19. `Goal Invocation Prompt`
-20. `Execution Handoff`
-21. `Self Deepinterview`
-22. `Critic Verdict`
+16. `Execution Discipline`
+17. `Checkpoint Policy`
+18. `Loop Documentation Policy`
+19. `Quality Gate`
+20. `Goal Invocation Prompt`
+21. `Execution Handoff`
+22. `Self Deepinterview`
+23. `Critic Verdict`
 
 Read `references/goal-spec-file-template.md` for the canonical file template.
 
@@ -120,7 +122,7 @@ Use the leaf specialist skills as internal substep contracts:
 - `goal-framing`: `goal-intent-extractor`, `goal-final-goal-designer`, `goal-object-modeler`, `goal-scope-contract-designer`
 - `goal-constraints`: `goal-domain-process-mapper`, `goal-freedom-policy-designer`
 - `goal-execution-design`: `goal-decomposer`, `goal-verifier-designer`
-- `goal-runtime-policy`: `goal-state-ledger-architect`, `goal-steering-policy-designer`
+- `goal-runtime-policy`: `goal-state-ledger-architect`, `goal-steering-policy-designer`, `goal-execution-discipline-designer`
 - `goal-handoff`: `goal-handoff-writer`
 - `goal-review`: `goal-self-deepinterview`, `goal-spec-critic`
 
@@ -159,6 +161,17 @@ The first complete draft is created after `goal-handoff`. Before finalizing, run
 - If a required field is missing, repair that specialist section before continuing.
 - Do not weaken hard constraints during assembly.
 - Do not allow maker self-report to count as completion evidence.
+- Do not allow completion claims without fresh evidence, bug fixes without
+  root-cause investigation when debugging is in scope, or software behavior
+  changes without test-first evidence unless explicitly exempted.
+- For implementation-like goals, require spec compliance review before quality
+  review. Quality review cannot rescue a result that fails the goal contract.
+- Include bite-sized execution steps only when the execution discipline selects
+  them; otherwise keep stories checkpointable without over-constraining the
+  executor.
+- Reject rationalizations such as "simple enough", "defer for now", "verify
+  later", "probably sufficient", or "audit only" when they bypass evidence,
+  scope, or verifier gates.
 - Do not allow `update_goal complete` until all active stories are complete or superseded and the final quality gate is `APPROVE + CLEAR`.
 - Do not finalize until `goal-review` returns `APPROVE` or its required revisions/user decision have been applied.
 - Keep `goal-review` separate from `goal-handoff`; handoff is maker work, review is checker work.

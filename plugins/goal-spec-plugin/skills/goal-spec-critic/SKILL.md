@@ -16,6 +16,7 @@ full_goal_contract: required
 raw_user_objective: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: required
 ```
 
 ## Output
@@ -52,6 +53,21 @@ Return `REVISE` if:
   requirements, allowed statuses, or reject conditions.
 - The final invocation prompt omits enough scope-contract detail that a future
   executor could legally complete a smaller goal.
+- The spec permits completion without fresh verification evidence.
+- The spec permits bug-fix completion without root-cause evidence when bug,
+  regression, unexpected behavior, failing test, build failure, or performance
+  anomaly work is in scope.
+- The spec permits software behavior changes without test-first evidence and
+  without an explicit exemption.
+- The spec permits quality review to start before spec compliance review when
+  both are required.
+- The spec selects `bite_sized_steps` but does not include step contracts, or
+  omits bite-sized steps when the execution discipline marks them required.
+- The handoff drops or weakens concrete bite-sized steps produced by execution
+  discipline.
+- The review, handoff, or verifier path accepts rationalizations such as
+  "simple enough", "defer for now", "verify later", "probably sufficient", or
+  "audit only" as substitutes for evidence.
 
 ## Warning Checks
 

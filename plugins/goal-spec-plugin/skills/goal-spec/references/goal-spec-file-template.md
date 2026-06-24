@@ -145,7 +145,7 @@ aggregate_goal:
 | 1 | goal-framing | intent, final goal, goal object, scope contract | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/01-framing.yaml` |
 | 2 | goal-constraints | domain process, freedom policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/02-constraints.yaml` |
 | 3 | goal-execution-design | decomposition, verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/03-execution-design.yaml` |
-| 4 | goal-runtime-policy | state/ledger, steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/04-runtime-policy.yaml` |
+| 4 | goal-runtime-policy | state/ledger, steering policy, execution discipline | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/04-runtime-policy.yaml` |
 | 5 | goal-handoff | execution handoff, invocation prompt | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/05-handoff.yaml` |
 | 6 | goal-review | self-deepinterview, critic | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/units/06-review.yaml` |
 
@@ -163,9 +163,10 @@ aggregate_goal:
 | 8 | goal-verifier-designer | Verifier plan | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/08-verifier-plan.yaml` |
 | 9 | goal-state-ledger-architect | State and ledger | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/09-state-ledger.yaml` |
 | 10 | goal-steering-policy-designer | Steering policy | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/10-steering-policy.yaml` |
-| 11 | goal-handoff-writer | Execution handoff | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-handoff.yaml` |
-| 12 | goal-self-deepinterview | Intent alignment audit | ALIGNED | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/12-self-deepinterview.yaml` |
-| 13 | goal-spec-critic | Critic verdict | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/13-critic-verdict.yaml` |
+| 11 | goal-execution-discipline-designer | Iron laws, review policy, plan granularity, rationalization checks | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-discipline.yaml` |
+| 12 | goal-handoff-writer | Execution handoff | complete | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/12-execution-handoff.yaml` |
+| 13 | goal-self-deepinterview | Intent alignment audit | ALIGNED | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/13-self-deepinterview.yaml` |
+| 14 | goal-spec-critic | Critic verdict | APPROVE | `.goal-specs/intermediate/<YYYY-MM-DD-slug>/14-critic-verdict.yaml` |
 
 ## Story Goals
 
@@ -180,6 +181,9 @@ stories:
     success_criteria: []
     evidence_required: []
     allowed_freedom_zone: []
+    execution_steps:
+      granularity: story_level | checkpoint_level | bite_sized_steps
+      steps: []
 ```
 
 ## Required Process
@@ -248,9 +252,10 @@ state_and_ledger:
       verifier_plan: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/08-verifier-plan.yaml"
       state_ledger: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/09-state-ledger.yaml"
       steering_policy: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/10-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/12-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/13-critic-verdict.yaml"
+      execution_discipline: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/11-execution-discipline.yaml"
+      execution_handoff: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/12-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/13-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/<YYYY-MM-DD-slug>/14-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/<YYYY-MM-DD-slug>/"
     ledger_dir: ".goal-specs/ledger/<YYYY-MM-DD-slug>/"
     brief: ".goal-specs/ledger/<YYYY-MM-DD-slug>/brief.md"
@@ -324,6 +329,84 @@ steering_policy:
     - mutation_that_bypasses_verifier_or_quality_gate
 ```
 
+## Execution Discipline
+
+```yaml
+execution_discipline:
+  iron_laws:
+    - id: fresh-evidence-before-completion
+      rule: "No completion claim or checkpoint without fresh verification evidence."
+      applies_when: always
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: block_completion
+    - id: root-cause-before-bug-fix
+      rule: "No bug fix without root-cause investigation first."
+      applies_when: "bug, regression, unexpected behavior, failing test, performance anomaly"
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: return_to_investigation
+    - id: test-first-for-behavior-change
+      rule: "No software behavior change without failing test evidence first unless explicitly exempted."
+      applies_when: "software behavior change"
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: block_story_completion
+  review_policy:
+    required_reviews:
+      - id: spec_compliance_review
+        order: 1
+        purpose: "Verify the result satisfies the goal spec, scope contract, stories, and verifier plan."
+        required_when: ""
+        reviewer_focus: []
+        approval_required_before: quality_review
+      - id: quality_review
+        order: 2
+        purpose: "Verify implementation quality after spec compliance passes."
+        required_when: ""
+        reviewer_focus: []
+        may_start_only_after: "spec_compliance_review APPROVE"
+  plan_granularity:
+    selected_mode: story_level
+    selection_reason: ""
+    bite_sized_required_when: []
+    bite_sized_step_contract:
+      required: false
+      each_step_requires:
+        - action
+        - expected_result_or_evidence
+      coding_step_requires_when_applicable:
+        - failing_test_command
+        - expected_failure
+        - minimal_implementation_step
+        - passing_verification_command
+    story_execution_steps: {}
+  rationalization_checks:
+    red_flags:
+      - phrase: "too simple to test"
+        normalized_risk: "test discipline bypass"
+        action: "require test evidence or explicit exemption"
+      - phrase: "defer for now"
+        normalized_risk: "unapproved scope shrink"
+        action: "check scope_contract.defer_policy"
+      - phrase: "verify later"
+        normalized_risk: "completion without evidence"
+        action: "block checkpoint"
+      - phrase: "probably enough"
+        normalized_risk: "weak evidence"
+        action: "require concrete verifier evidence"
+      - phrase: "audit only"
+        normalized_risk: "capability not delivered"
+        action: "require implementation, already-satisfied evidence, not-applicable evidence, or user-approved deferral"
+  verifier_integration:
+    aggregate_checks_to_add: []
+    story_checks_to_add: []
+    quality_gate_requirements: []
+```
+
 ## Checkpoint Policy
 
 ```yaml
@@ -351,6 +434,7 @@ quality_gate:
     - all_active_stories_complete_or_superseded
     - final_verifier_evidence_present
     - scope_contract_preserved
+    - execution_discipline_satisfied_or_explicitly_exempted
     - self_deepinterview_aligned
     - critic_verdict_approve
     - no_unresolved_blockers
@@ -361,7 +445,7 @@ quality_gate:
 Use this prompt to start goal execution from this spec:
 
 ```text
-Use the goal spec at <path to this file> as the execution contract. Create one aggregate goal from its Goal Handoff Header, preserve its Scope Contract, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
+Use the goal spec at <path to this file> as the execution contract. Create one aggregate goal from its Goal Handoff Header, preserve its Scope Contract, follow its Execution Discipline, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
 ```
 
 If the execution surface cannot read the file path, use this inline fallback:
@@ -372,9 +456,10 @@ Use these story goals: <story ids and objectives>.
 Preserve this final goal: <final_goal.objective>.
 Preserve this completion surface: <goal_object_model.completion_surface>.
 Preserve this scope contract: <scope_contract summary, completion-critical capabilities, required matrices, and deferral policy>.
+Follow this execution discipline: <iron laws, review order, selected plan granularity, rationalization red flags, and exemptions>.
 Follow the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy from the goal spec.
 For every execution loop, write `.goal-specs/ledger/<YYYY-MM-DD-slug>/loop-documents/iteration-NNN.md`.
-Do not mark the aggregate goal complete until all active stories are complete or superseded, required verifier evidence exists, the scope contract is preserved, self-deepinterview is ALIGNED, critic verdict is APPROVE, and the Quality Gate is APPROVE + CLEAR.
+Do not mark the aggregate goal complete until all active stories are complete or superseded, required verifier evidence exists, the scope contract is preserved, execution discipline is satisfied or explicitly exempted, self-deepinterview is ALIGNED, critic verdict is APPROVE, and the Quality Gate is APPROVE + CLEAR.
 ```
 
 ## Self Deepinterview
@@ -392,6 +477,7 @@ self_deepinterview:
     success_fit: 0.0
     autonomy_fit: 0.0
     scope_contract_fit: 0.0
+    execution_discipline_fit: 0.0
   unit_micro_interviews:
     framing: []
     constraints: []
@@ -414,6 +500,12 @@ Create one aggregate Codex goal from the aggregate objective in this spec.
 Execute story goals in ledger order unless structured steering changes the order.
 Preserve the Scope Contract: completion-critical capabilities cannot be narrowed,
 silently deferred, or hidden under broad labels.
+Follow the Execution Discipline: no completion without fresh evidence; no bug
+fix without root-cause evidence when debugging is in scope; no software behavior
+change without test-first evidence unless explicitly exempted; run spec
+compliance review before quality review; reject rationalizations such as
+"simple enough", "defer for now", "verify later", "probably sufficient", or
+"audit only" when they bypass evidence or scope gates.
 Before each story, read the state artifacts listed above.
 After each attempt, write decisions, failures, blockers, evidence, steering mutations, and lessons to the ledger.
 For every execution loop/iteration, write a loop document under `.goal-specs/ledger/<YYYY-MM-DD-slug>/loop-documents/iteration-NNN.md`.

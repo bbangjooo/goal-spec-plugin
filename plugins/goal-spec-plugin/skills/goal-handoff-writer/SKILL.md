@@ -16,6 +16,7 @@ aggregate_goal: required
 final_goal: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: required
 stories: required
 verifier_plan: required
 state_and_ledger: required
@@ -54,6 +55,15 @@ execution_handoff:
   policy during execution and steering.
 - The inline fallback prompt must include the scope contract summary; otherwise
   a future executor may legally choose a smaller goal.
+- Include the execution discipline summary in the path-based and inline prompts:
+  iron laws, review order, selected plan granularity, and rationalization checks.
+- State that spec compliance review must approve before quality review starts
+  whenever the review policy requires both.
+- State that selected bite-sized execution steps, if required, are part of the
+  execution contract rather than optional commentary.
+- If `execution_discipline.plan_granularity.story_execution_steps` exists, carry
+  those steps into the handoff without weakening or summarizing away commands,
+  expected failures, expected outputs, or evidence requirements.
 - Forbid final `update_goal complete` until all active stories are complete or superseded and the quality gate is `APPROVE + CLEAR`.
 
 ## Quality Bar

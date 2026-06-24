@@ -16,6 +16,7 @@ stories: required
 final_goal: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: optional
 hard_constraints: required
 required_sequences: required
 domain_failure_modes: required
@@ -51,6 +52,13 @@ verifier_plan:
   user approval.
 - Required parity or coverage matrices must reject missing rows, missing
   evidence, and row statuses outside the allowed status set.
+- If execution discipline is available, verifier checks must enforce fresh
+  evidence before completion, root-cause evidence before bug-fix completion,
+  test-first evidence for software behavior changes unless exempted, and
+  spec-compliance review before quality review.
+- Reject story completion when it relies on rationalizations such as "simple
+  enough", "defer for now", "verify later", "probably sufficient", or
+  "audit-only" instead of required evidence or approved deferral.
 
 ## Quality Bar
 

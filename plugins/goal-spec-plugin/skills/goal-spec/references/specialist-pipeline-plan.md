@@ -29,6 +29,7 @@ goal-spec
   -> goal-runtime-policy
       -> goal-state-ledger-architect
       -> goal-steering-policy-designer
+      -> goal-execution-discipline-designer
   -> goal-handoff
       -> goal-handoff-writer
   -> goal-review
@@ -49,6 +50,8 @@ Do not rely on one agent being broadly wise. Make quality emerge from:
 - explicit input/output schemas
 - a stable final goal before decomposition
 - explicit goal object modeling and scope/capability contracting before process mapping
+- execution discipline gates for evidence, root cause, test-first behavior
+  changes, review order, plan granularity, and rationalization checks
 - verifier-backed completion
 - critic review before final output
 - traceability from user intent to story goals and checks
@@ -76,21 +79,21 @@ Writes `units/03-execution-design.yaml`, `07-decomposition.yaml`, and `08-verifi
 
 ### 4. goal-runtime-policy
 
-Internal substeps: `goal-state-ledger-architect`, `goal-steering-policy-designer`.
+Internal substeps: `goal-state-ledger-architect`, `goal-steering-policy-designer`, `goal-execution-discipline-designer`.
 
-Writes `units/04-runtime-policy.yaml`, `09-state-ledger.yaml`, and `10-steering-policy.yaml`.
+Writes `units/04-runtime-policy.yaml`, `09-state-ledger.yaml`, `10-steering-policy.yaml`, and `11-execution-discipline.yaml`.
 
 ### 5. goal-handoff
 
 Internal substep: `goal-handoff-writer`.
 
-Writes `units/05-handoff.yaml` and `11-execution-handoff.yaml`.
+Writes `units/05-handoff.yaml` and `12-execution-handoff.yaml`.
 
 ### 6. goal-review
 
 Internal substeps: `goal-self-deepinterview`, `goal-spec-critic`.
 
-Writes `units/06-review.yaml`, `12-self-deepinterview.yaml`, and `13-critic-verdict.yaml`.
+Writes `units/06-review.yaml`, `13-self-deepinterview.yaml`, and `14-critic-verdict.yaml`.
 
 ## Internal Specialist Roles
 
@@ -424,9 +427,10 @@ state_and_ledger:
       verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml"
       state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
       steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
+      execution_discipline: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-discipline.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/14-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -511,7 +515,56 @@ Quality bar:
 - Superseding a story requires evidence that it is invalid, obsolete, duplicate, or blocked by an external decision.
 - Reordering may not violate required sequences unless the required sequence is explicitly revised with rationale.
 
-### 11. goal-handoff-writer
+### 11. goal-execution-discipline-designer
+
+Purpose: design iron-law execution gates, two-stage review order, plan
+granularity, and rationalization red-flag checks.
+
+Input:
+
+```yaml
+intent_summary: required
+domain: required
+final_goal: required
+goal_object_model: required
+scope_contract: required
+stories: required
+verifier_plan: required
+freedom_policy: required
+domain_failure_modes: required
+authority_boundaries: required
+```
+
+Output:
+
+```yaml
+execution_discipline:
+  iron_laws: []
+  review_policy:
+    required_reviews: []
+  plan_granularity:
+    selected_mode: story_level | checkpoint_level | bite_sized_steps
+    selection_reason: required
+    story_execution_steps: {}
+  rationalization_checks:
+    red_flags: []
+  verifier_integration:
+    aggregate_checks_to_add: []
+    story_checks_to_add: []
+    quality_gate_requirements: []
+```
+
+Quality bar:
+
+- Fresh verification evidence is required before completion claims.
+- Bug-fix work requires root-cause evidence before fixes complete.
+- Software behavior changes require test-first evidence unless explicitly
+  exempted.
+- Spec compliance review precedes quality review.
+- Bite-sized steps are generated only when selected and required.
+- Rationalization red flags cannot substitute for evidence.
+
+### 12. goal-handoff-writer
 
 Purpose: turn the contract into execution instructions for Codex/OMX goal mode.
 
@@ -520,6 +573,8 @@ Input:
 ```yaml
 final_goal: required
 goal_object_model: required
+scope_contract: required
+execution_discipline: required
 aggregate_goal: required
 stories: required
 verifier_plan: required
@@ -552,7 +607,7 @@ Quality bar:
 - It must require one loop document per execution loop.
 - Final completion requires all active stories complete or superseded and quality gate APPROVE + CLEAR.
 
-### 12. goal-self-deepinterview
+### 13. goal-self-deepinterview
 
 Purpose: audit the first full draft against the user's natural-language intent before final structural critique.
 
@@ -563,6 +618,8 @@ raw_user_objective: required
 source_material: optional
 draft_goal_spec: required
 specialist_outputs: required
+scope_contract: required
+execution_discipline: required
 ```
 
 Output:
@@ -579,6 +636,9 @@ self_deepinterview:
     constraint_fit: 0.0
     success_fit: 0.0
     autonomy_fit: 0.0
+    scope_contract_fit: 0.0
+    execution_discipline_fit: 0.0
+  unit_micro_interviews: {}
   resolved_internally: []
   unresolved_questions: []
   user_question:
@@ -595,7 +655,7 @@ Quality bar:
 - Ask at most one concise option-based user question per round.
 - ALIGNED only when the draft faithfully operationalizes the user's natural language.
 
-### 13. goal-spec-critic
+### 14. goal-spec-critic
 
 Purpose: adversarially inspect the final contract before presentation or execution.
 
@@ -604,6 +664,9 @@ Input:
 ```yaml
 full_goal_contract: required
 raw_user_objective: required
+goal_object_model: required
+scope_contract: required
+execution_discipline: required
 ```
 
 Output:

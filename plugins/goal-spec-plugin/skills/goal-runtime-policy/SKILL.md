@@ -8,8 +8,8 @@ description: Use as a separate agent in the goal-spec pipeline to design durable
 ## Purpose
 
 Run the runtime-policy slice of the goal-spec pipeline in one isolated agent
-context. This agent defines how execution remembers, verifies, adapts, and
-documents each loop.
+context. This agent defines how execution remembers, verifies, adapts,
+documents, reviews, and disciplines each loop.
 
 ## Internal Substeps
 
@@ -17,6 +17,7 @@ Execute these substeps sequentially inside this agent:
 
 1. `goal-state-ledger-architect`
 2. `goal-steering-policy-designer`
+3. `goal-execution-discipline-designer`
 
 Do not spawn further agents by default.
 
@@ -45,6 +46,7 @@ Write these files:
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy.yaml
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-discipline.yaml
 ```
 
 The unit output must include:
@@ -57,10 +59,12 @@ unit_result:
   files_written: []
   state_and_ledger_summary: required
   steering_policy_summary: required
+  execution_discipline_summary: required
   loop_document_policy_summary: required
   downstream_contract:
     state_and_ledger: required
     steering_policy: required
+    execution_discipline: required
   repair_instructions: []
 ```
 
@@ -75,8 +79,14 @@ unit_result:
 - Ledger artifacts must preserve scope-contract decisions, including why any
   completion-critical capability is implemented, already satisfied, not
   applicable, or user-approved deferred.
+- Execution discipline must include fresh-evidence completion gates,
+  root-cause-before-fix gates when debugging is in scope, test-first gates for
+  software behavior changes unless explicitly exempted, two-stage review policy,
+  plan granularity, and rationalization red-flag checks.
+- Do not make bite-sized steps mandatory for every goal. Select them only when
+  they materially improve reproducibility or reduce execution risk.
 
 ## Quality Bar
 
 The next agent should be able to write an execution handoff that is resumable,
-auditable, and verifier-gated.
+auditable, verifier-gated, and resistant to common execution rationalizations.

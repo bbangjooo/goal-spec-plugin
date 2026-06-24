@@ -46,9 +46,10 @@ state_and_ledger:
       verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml"
       state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
       steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
+      execution_discipline: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-discipline.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/14-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -98,8 +99,13 @@ state_and_ledger:
 - The scope contract must be listed as an intermediate artifact because it
   defines completion-critical capabilities, evidence surfaces, required
   matrices, and deferral authority.
+- The execution discipline artifact must be listed because it defines iron-law
+  gates, review sequencing, plan granularity, and rationalization checks.
 - Read/write rules must preserve scope-contract status decisions for each
   completion-critical capability.
+- Read/write rules must preserve fresh verification evidence, root-cause
+  evidence, test-first evidence, review verdicts, and any explicit discipline
+  exemptions.
 - Canonical goal-spec documents live under the project root's `.goal-specs/`; `.omx/ultragoal` paths are optional runtime mirrors only.
 
 ## Quality Bar

@@ -19,6 +19,7 @@ source_material: optional
 draft_goal_spec: required
 specialist_outputs: required
 scope_contract: required
+execution_discipline: required
 ```
 
 ## Output
@@ -36,6 +37,7 @@ self_deepinterview:
     success_fit: 0.0
     autonomy_fit: 0.0
     scope_contract_fit: 0.0
+    execution_discipline_fit: 0.0
   unit_micro_interviews:
     framing: []
     constraints: []
@@ -84,6 +86,8 @@ Adaptation for goal specs:
    - `autonomy_fit`: freedom zones, required process, and escalation points.
    - `scope_contract_fit`: preservation of completion-critical capabilities,
      surface/capability distinctions, required matrices, and deferral authority.
+   - `execution_discipline_fit`: preservation of iron-law gates, review order,
+     selected plan granularity, and rationalization checks.
 3. Run one pressure pass:
    - What assumption did the draft make that the user did not state?
    - What did the draft omit that the user emphasized?
@@ -98,6 +102,10 @@ Adaptation for goal specs:
      evidence, allowed statuses, and reject conditions?
    - Could an executor satisfy this spec with a result smaller than the user's
      likely expectation?
+   - Could an executor checkpoint or complete work by saying "simple enough",
+     "defer for now", "verify later", "probably sufficient", or "audit only"?
+   - Are bug-fix, behavior-change, and completion claims blocked unless their
+     required evidence or explicit exemptions exist?
 4. Run unit-level micro-interviews:
    - `framing`: Did intent, final goal, object model, and scope contract preserve
      the same desired end state?
@@ -106,9 +114,11 @@ Adaptation for goal specs:
    - `execution_design`: Do stories and verifier checks cover every
      completion-critical capability and required matrix?
    - `runtime_policy`: Will state, ledger, loop docs, and steering preserve
-     capability status and deferral decisions?
+     capability status, deferral decisions, iron-law evidence, review verdicts,
+     plan granularity decisions, and discipline exemptions?
    - `handoff`: Does the copyable prompt include enough scope-contract detail to
-     prevent a smaller legal interpretation?
+     prevent a smaller legal interpretation, and enough execution-discipline
+     detail to prevent rationalized completion?
 5. If the answer is recoverable from source material, add it to `resolved_internally`.
 6. If not recoverable and it changes execution materially, set `USER_DECISION_NEEDED` and ask one concise question with 2-4 concrete options.
 7. If revisions are needed but no user decision is needed, set `REVISE` and write concrete `revision_instructions`.

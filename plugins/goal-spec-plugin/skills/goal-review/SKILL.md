@@ -29,6 +29,7 @@ draft_goal_spec: required
 specialist_outputs: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: required
 artifact_paths:
   intermediate_dir: required
 ```
@@ -39,8 +40,8 @@ Write these files:
 
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml
-.goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/13-self-deepinterview.yaml
+.goal-specs/intermediate/YYYY-MM-DD-<slug>/14-critic-verdict.yaml
 ```
 
 The unit output must include:
@@ -68,6 +69,9 @@ unit_result:
   process consistency, loop documentation, handoff safety, or completion gates.
 - Return `REVISE` if any grouped unit narrows, omits, weakens, or silently
   defers a completion-critical capability from the scope contract.
+- Return `REVISE` if iron-law gates, two-stage review order, selected plan
+  granularity, or rationalization checks are missing from verifier checks,
+  state/ledger, handoff, or quality gate.
 - Run unit-level micro-interviews inside `goal-self-deepinterview`; do not spawn
   separate self-deepinterview agents for every unit unless a unit is materially
   ambiguous after review.

@@ -62,6 +62,7 @@ unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/04-runtime-policy
 specialist_outputs:
   state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
   steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
+  execution_discipline: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-discipline.yaml"
 ```
 
 ### goal-handoff
@@ -71,7 +72,7 @@ Writes:
 ```yaml
 unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/05-handoff.yaml"
 specialist_outputs:
-  execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
+  execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-execution-handoff.yaml"
 ```
 
 ### goal-review
@@ -81,8 +82,8 @@ Writes:
 ```yaml
 unit_output: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/units/06-review.yaml"
 specialist_outputs:
-  self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
-  critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
+  self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-self-deepinterview.yaml"
+  critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/14-critic-verdict.yaml"
 ```
 
 ## Internal Specialist Contracts
@@ -378,9 +379,10 @@ state_and_ledger:
       verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-verifier-plan.yaml"
       state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-state-ledger.yaml"
       steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-critic-verdict.yaml"
+      execution_discipline: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-execution-discipline.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/13-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/14-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -452,7 +454,81 @@ steering_policy:
     - mutation_that_bypasses_verifier_or_quality_gate
 ```
 
-## 11. goal-handoff-writer
+## 11. goal-execution-discipline-designer
+
+Input:
+
+```yaml
+intent_summary: required
+domain: required
+final_goal: required
+goal_object_model: required
+scope_contract: required
+stories: required
+verifier_plan: required
+freedom_policy: required
+domain_failure_modes: required
+authority_boundaries: required
+```
+
+Output:
+
+```yaml
+execution_discipline:
+  iron_laws:
+    - id: fresh-evidence-before-completion
+      rule: "No completion claim or checkpoint without fresh verification evidence."
+      applies_when: always
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: block_completion
+    - id: root-cause-before-bug-fix
+      rule: "No bug fix without root-cause investigation first."
+      applies_when: "bug, regression, unexpected behavior, failing test, performance anomaly"
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: return_to_investigation
+    - id: test-first-for-behavior-change
+      rule: "No software behavior change without failing test evidence first unless explicitly exempted."
+      applies_when: "software behavior change"
+      required_evidence: []
+      verifier_mapping: []
+      exemptions: []
+      violation_action: block_story_completion
+  review_policy:
+    required_reviews:
+      - id: spec_compliance_review
+        order: 1
+        purpose: required
+        required_when: required
+        reviewer_focus: []
+        approval_required_before: quality_review
+      - id: quality_review
+        order: 2
+        purpose: required
+        required_when: required
+        reviewer_focus: []
+        may_start_only_after: "spec_compliance_review APPROVE"
+  plan_granularity:
+    selected_mode: story_level | checkpoint_level | bite_sized_steps
+    selection_reason: required
+    bite_sized_required_when: []
+    bite_sized_step_contract:
+      required: false
+      each_step_requires: []
+      coding_step_requires_when_applicable: []
+    story_execution_steps: {}
+  rationalization_checks:
+    red_flags: []
+  verifier_integration:
+    aggregate_checks_to_add: []
+    story_checks_to_add: []
+    quality_gate_requirements: []
+```
+
+## 12. goal-handoff-writer
 
 Input:
 
@@ -461,6 +537,7 @@ aggregate_goal: required
 final_goal: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: required
 stories: required
 verifier_plan: required
 state_and_ledger: required
@@ -484,7 +561,7 @@ execution_handoff:
   blocked_rule: required
 ```
 
-## 12. goal-self-deepinterview
+## 13. goal-self-deepinterview
 
 Input:
 
@@ -494,6 +571,7 @@ source_material: optional
 draft_goal_spec: required
 specialist_outputs: required
 scope_contract: required
+execution_discipline: required
 ```
 
 Output:
@@ -511,6 +589,7 @@ self_deepinterview:
     success_fit: 0.0
     autonomy_fit: 0.0
     scope_contract_fit: 0.0
+    execution_discipline_fit: 0.0
   unit_micro_interviews:
     framing: []
     constraints: []
@@ -526,7 +605,7 @@ self_deepinterview:
   revision_instructions: []
 ```
 
-## 13. goal-spec-critic
+## 14. goal-spec-critic
 
 Input:
 
@@ -535,6 +614,7 @@ full_goal_contract: required
 raw_user_objective: required
 goal_object_model: required
 scope_contract: required
+execution_discipline: required
 ```
 
 Output:
@@ -559,6 +639,9 @@ critic_result:
 - Excluded surfaces are interpreted narrowly; excluding an implementation surface does not silently remove runtime, policy, audit, or contract surfaces required by the goal object.
 - Completion-critical capability contracts are preserved in stories, verifier
   checks, state/ledger, and handoff.
+- Execution discipline iron laws, two-stage review, selected plan granularity,
+  and rationalization checks are preserved in verifier checks, state/ledger,
+  handoff, and quality gate.
 - Agent-decided deferral is forbidden for completion-critical capabilities;
   deferral must be user-approved or proven not applicable with evidence.
 - Any required parity or coverage matrix has a story owner, row source rules,

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Goal Execution Discipline Designer"
+  short_description: "Design iron-law execution gates and review discipline"
+  default_prompt: "Use $goal-execution-discipline-designer to add iron-law gates, review policy, plan granularity, and rationalization checks to a goal spec."
+
+policy:
+  allow_implicit_invocation: true
