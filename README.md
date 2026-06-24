@@ -20,7 +20,9 @@ The main entry point is `$goal-spec`. It orchestrates specialist skills that eac
 Add this repository as a Codex plugin marketplace:
 
 ```bash
-codex plugin marketplace add bbangjooo/goal-spec-plugin
+codex plugin marketplace add bbangjooo/goal-spec-plugin \
+  --sparse .agents/plugins \
+  --sparse plugins/goal-spec-plugin
 ```
 
 Then open the Codex plugin directory, select the `Goal Spec` marketplace, and install `goal-spec-plugin`.
