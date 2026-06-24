@@ -27,6 +27,10 @@ quality_gate: required
 ```yaml
 execution_handoff:
   create_goal_objective: required
+  goal_invocation_prompt:
+    plain_prompt: required
+    prompt_with_spec_path: required
+    prompt_with_inline_summary: required
   story_execution_rules: []
   checkpoint_rules: []
   steering_rules: []
@@ -37,6 +41,8 @@ execution_handoff:
 ## Rules
 
 - Say exactly what aggregate goal to create.
+- Provide copyable prompts the user can paste into a new goal execution turn.
+- Include a path-based prompt that points to the final spec file and an inline-summary prompt for surfaces that cannot read the file path.
 - Say how to execute story goals and in what order.
 - Say what state to read before work and what evidence to write after work.
 - Say when checkpoint complete is allowed.
@@ -46,4 +52,4 @@ execution_handoff:
 
 ## Quality Bar
 
-The handoff should be copyable into a new goal execution turn as operational instructions.
+The handoff should make it obvious how to start execution: the final goal-spec output must include a short "copy this prompt into goal" instruction and at least one fully formed prompt.

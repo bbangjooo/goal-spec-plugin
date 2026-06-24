@@ -71,6 +71,7 @@ Each final spec is a single Markdown file that can be handed to a future Codex g
 - per-loop documentation policy
 - steering policy
 - checkpoint policy
+- copyable goal invocation prompt
 - self-deepinterview alignment result
 - critic verdict
 - direct execution handoff

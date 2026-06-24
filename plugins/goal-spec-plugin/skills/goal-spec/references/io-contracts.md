@@ -323,6 +323,10 @@ Output:
 ```yaml
 execution_handoff:
   create_goal_objective: required
+  goal_invocation_prompt:
+    plain_prompt: required
+    prompt_with_spec_path: required
+    prompt_with_inline_summary: required
   story_execution_rules: []
   checkpoint_rules: []
   steering_rules: []

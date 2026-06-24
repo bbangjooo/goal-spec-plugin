@@ -291,6 +291,26 @@ quality_gate:
     - no_unresolved_blockers
 ```
 
+## Goal Invocation Prompt
+
+Use this prompt to start goal execution from this spec:
+
+```text
+Use the goal spec at <path to this file> as the execution contract. Create one aggregate goal from its Goal Handoff Header, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
+```
+
+If the execution surface cannot read the file path, use this inline fallback:
+
+```text
+Create one aggregate goal for: <aggregate goal objective>.
+Use these story goals: <story ids and objectives>.
+Preserve this final goal: <final_goal.objective>.
+Preserve this completion surface: <goal_object_model.completion_surface>.
+Follow the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy from the goal spec.
+For every execution loop, write `.goal-specs/ledger/<YYYY-MM-DD-slug>/loop-documents/iteration-NNN.md`.
+Do not mark the aggregate goal complete until all active stories are complete or superseded, required verifier evidence exists, self-deepinterview is ALIGNED, critic verdict is APPROVE, and the Quality Gate is APPROVE + CLEAR.
+```
+
 ## Self Deepinterview
 
 ```yaml

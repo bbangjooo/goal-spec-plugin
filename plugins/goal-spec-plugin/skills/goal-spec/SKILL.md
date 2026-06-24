@@ -85,9 +85,10 @@ The final spec file must contain:
 14. `Checkpoint Policy`
 15. `Loop Documentation Policy`
 16. `Quality Gate`
-17. `Execution Handoff`
-18. `Self Deepinterview`
-19. `Critic Verdict`
+17. `Goal Invocation Prompt`
+18. `Execution Handoff`
+19. `Self Deepinterview`
+20. `Critic Verdict`
 
 Read `references/goal-spec-file-template.md` for the canonical file template.
 
@@ -111,6 +112,13 @@ Run the work in this order. If actual separate skill invocation is unavailable i
 Read `references/io-contracts.md` for each specialist's required input/output schema.
 
 After each specialist stage, write that stage's raw structured output to the matching file in `.goal-specs/intermediate/YYYY-MM-DD-<slug>/`. The final spec must summarize those outputs and link to the intermediate files.
+
+The final assistant response after creating the spec must include:
+
+- The final spec file path.
+- A `Goal Invocation Prompt` block that the user can paste into a new Codex goal execution turn.
+- A shorter path-based prompt when the executor can read the workspace file.
+- An inline fallback prompt when the executor cannot access the file path.
 
 The first complete draft is created after `goal-handoff-writer`. Before running the final critic, run `goal-self-deepinterview` to audit whether that draft faithfully operationalizes the user's natural-language intent. If it returns `REVISE`, update the relevant specialist sections and rerun self-deepinterview. If it returns `USER_DECISION_NEEDED`, ask one concise option-based question and apply the answer before continuing.
 
@@ -155,6 +163,12 @@ completion_rule: "Do not mark the aggregate goal complete until all active stori
 ```
 
 The `Execution Handoff` section must be written as direct instructions to the next agent:
+
+The `Goal Invocation Prompt` section must include copyable prompts like:
+
+```text
+Use the goal spec at <spec_file_path> as the execution contract. Create one aggregate goal from its Goal Handoff Header, execute the story goals with the required process, verifier plan, state/ledger rules, steering policy, and loop documentation policy, and do not mark the aggregate goal complete until the spec's Quality Gate is APPROVE + CLEAR.
+```
 
 ```text
 Create one aggregate Codex goal from the aggregate objective below.

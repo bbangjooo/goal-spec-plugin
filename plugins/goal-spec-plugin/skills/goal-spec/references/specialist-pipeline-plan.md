@@ -448,6 +448,10 @@ Output:
 ```yaml
 execution_handoff:
   create_goal_objective: required
+  goal_invocation_prompt:
+    plain_prompt: required
+    prompt_with_spec_path: required
+    prompt_with_inline_summary: required
   story_execution_rules: []
   checkpoint_rules: []
   steering_rules: []
@@ -459,6 +463,7 @@ Quality bar:
 
 - Handoff must be executable by an agent without rereading the whole design discussion.
 - It must say when to call create_goal, when to checkpoint stories, and when update_goal complete is forbidden.
+- It must include a copyable prompt the user can paste into a goal execution turn.
 - It must require one loop document per execution loop.
 - Final completion requires all active stories complete or superseded and quality gate APPROVE + CLEAR.
 
@@ -656,4 +661,5 @@ The refactor is complete when:
 - The critic can block incomplete or unsafe contracts.
 - Every execution loop is required to leave a loop document in the ledger.
 - A generated execution handoff forbids premature `update_goal complete`.
+- The final goal-spec output tells the user exactly what prompt to give the goal executor.
 - Smoke tests show consistent structure across at least two domains.
