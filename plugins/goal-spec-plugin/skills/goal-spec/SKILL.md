@@ -1,6 +1,6 @@
 ---
 name: goal-spec
-description: Use when converting an objective into a single goal-executable spec file by orchestrating specialist goal-spec skills for intent extraction, domain process mapping, freedom policy, decomposition, verification, state/ledger, steering, handoff, and critic review.
+description: Use when converting an objective into a single goal-executable spec file by orchestrating specialist goal-spec skills for intent extraction, final goal design, goal object modeling, domain process mapping, freedom policy, decomposition, verification, state/ledger, steering, handoff, and critic review.
 ---
 
 # Goal Spec
@@ -34,7 +34,7 @@ Use this directory layout:
   specs/                 # final goal-executable specs
   intermediate/          # specialist outputs used to build final specs
   references/            # user-provided or extracted reference notes
-  ledger/                # goal-spec execution notes, evidence indexes, steering logs
+  ledger/                # goal-spec execution notes, loop docs, evidence indexes, steering logs
 ```
 
 For each generated spec, create a slug-specific subdirectory and write specialist outputs there:
@@ -42,15 +42,17 @@ For each generated spec, create a slug-specific subdirectory and write specialis
 ```text
 .goal-specs/intermediate/YYYY-MM-DD-<slug>/
   01-intent.yaml
-  02-domain-process.yaml
-  03-freedom-policy.yaml
-  04-decomposition.yaml
-  05-verifier-plan.yaml
-  06-state-ledger.yaml
-  07-steering-policy.yaml
-  08-execution-handoff.yaml
-  09-self-deepinterview.yaml
-  10-critic-verdict.yaml
+  02-final-goal.yaml
+  03-goal-object-model.yaml
+  04-domain-process.yaml
+  05-freedom-policy.yaml
+  06-decomposition.yaml
+  07-verifier-plan.yaml
+  08-state-ledger.yaml
+  09-steering-policy.yaml
+  10-execution-handoff.yaml
+  11-self-deepinterview.yaml
+  12-critic-verdict.yaml
 ```
 
 Reference notes that future goal execution should consult go under:
@@ -69,20 +71,23 @@ The final spec file must contain:
 
 1. `Goal Handoff Header`
 2. `Intent Summary`
-3. `Aggregate Goal`
-4. `Specialist Trace`
-5. `Story Goals`
-6. `Required Process`
-7. `Freedom Policy`
-8. `Guardrails`
-9. `Verifier Plan`
-10. `State And Ledger`
-11. `Steering Policy`
-12. `Checkpoint Policy`
-13. `Quality Gate`
-14. `Execution Handoff`
-15. `Self Deepinterview`
-16. `Critic Verdict`
+3. `Final Goal`
+4. `Goal Object Model`
+5. `Aggregate Goal`
+6. `Specialist Trace`
+7. `Story Goals`
+8. `Required Process`
+9. `Freedom Policy`
+10. `Guardrails`
+11. `Verifier Plan`
+12. `State And Ledger`
+13. `Steering Policy`
+14. `Checkpoint Policy`
+15. `Loop Documentation Policy`
+16. `Quality Gate`
+17. `Execution Handoff`
+18. `Self Deepinterview`
+19. `Critic Verdict`
 
 Read `references/goal-spec-file-template.md` for the canonical file template.
 
@@ -91,15 +96,17 @@ Read `references/goal-spec-file-template.md` for the canonical file template.
 Run the work in this order. If actual separate skill invocation is unavailable in the current surface, simulate each role explicitly and keep the same input/output contracts.
 
 1. `goal-intent-extractor`
-2. `goal-domain-process-mapper`
-3. `goal-freedom-policy-designer`
-4. `goal-decomposer`
-5. `goal-verifier-designer`
-6. `goal-state-ledger-architect`
-7. `goal-steering-policy-designer`
-8. `goal-handoff-writer`
-9. `goal-self-deepinterview`
-10. `goal-spec-critic`
+2. `goal-final-goal-designer`
+3. `goal-object-modeler`
+4. `goal-domain-process-mapper`
+5. `goal-freedom-policy-designer`
+6. `goal-decomposer`
+7. `goal-verifier-designer`
+8. `goal-state-ledger-architect`
+9. `goal-steering-policy-designer`
+10. `goal-handoff-writer`
+11. `goal-self-deepinterview`
+12. `goal-spec-critic`
 
 Read `references/io-contracts.md` for each specialist's required input/output schema.
 
@@ -110,6 +117,8 @@ The first complete draft is created after `goal-handoff-writer`. Before running 
 ## Orchestrator Rules
 
 - Preserve traceability from raw objective to aggregate goal, story goals, verifier checks, and final handoff.
+- Do not decompose mentioned topics directly. First classify the real goal object, completion surface, owning systems, and decomposition basis with `goal-object-modeler`.
+- Treat user exclusions as surface-specific. Excluding an implementation surface does not automatically exclude runtime, policy, audit, or contract surfaces that are required for the goal object to be complete.
 - Do not pass incomplete specialist output to the next stage.
 - If a required field is missing, repair that specialist section before continuing.
 - Do not weaken hard constraints during assembly.
@@ -151,6 +160,7 @@ The `Execution Handoff` section must be written as direct instructions to the ne
 Create one aggregate Codex goal from the aggregate objective below.
 Execute stories in order unless structured steering changes the order.
 Before each story, read state. After each attempt, write evidence, decisions, failures, blockers, and lessons.
+For every execution loop/iteration, write a loop document under `.goal-specs/ledger/YYYY-MM-DD-<slug>/loop-documents/iteration-NNN.md`.
 Checkpoint a story complete only after verifier evidence exists.
 Use structured steering for plan changes.
 Update the aggregate goal complete only after the quality gate is APPROVE + CLEAR.

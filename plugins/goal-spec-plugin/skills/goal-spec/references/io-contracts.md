@@ -26,13 +26,78 @@ unknowns: []
 high_risk_ambiguities: []
 ```
 
-## 2. goal-domain-process-mapper
+## 2. goal-final-goal-designer
 
 Input:
 
 ```yaml
 intent_summary: required
 domain: required
+target_outcome: required
+success_shape: required
+non_goals: []
+authority_boundaries: []
+assumptions: []
+unknowns: []
+source_material: optional
+```
+
+Output:
+
+```yaml
+final_goal:
+  title: required
+  objective: required
+  desired_end_state: required
+  success_shape: required
+  completion_requires: []
+  failure_definition: required
+  non_goals: []
+  decision_boundaries: []
+  tradeoff_priority: []
+  goal_quality_checks: []
+```
+
+## 3. goal-object-modeler
+
+Input:
+
+```yaml
+intent_summary: required
+domain: required
+final_goal: required
+source_material: optional
+known_constraints: optional
+```
+
+Output:
+
+```yaml
+goal_object_model:
+  primary_goal_object: required
+  primary_type: required
+  not_merely: []
+  completion_surface: required
+  completion_level: required
+  owning_systems: []
+  mentioned_topics: []
+  topic_interpretation: {}
+  excluded_surfaces: {}
+  required_capability_chain: []
+  missing_surface_risks: []
+  decomposition_basis: required
+  verifier_focus: []
+```
+
+## 4. goal-domain-process-mapper
+
+Input:
+
+```yaml
+intent_summary: required
+domain: required
+final_goal: required
+goal_object_model: required
 source_material: optional
 domain_references: optional
 ```
@@ -51,12 +116,14 @@ domain_failure_modes: []
 domain_guardrail_candidates: []
 ```
 
-## 3. goal-freedom-policy-designer
+## 5. goal-freedom-policy-designer
 
 Input:
 
 ```yaml
 intent_summary: required
+final_goal: required
+goal_object_model: required
 required_processes: required
 domain_failure_modes: required
 authority_boundaries: required
@@ -73,13 +140,14 @@ freedom_policy:
   escalation_points: []
 ```
 
-## 4. goal-decomposer
+## 6. goal-decomposer
 
 Input:
 
 ```yaml
 intent_summary: required
-target_outcome: required
+final_goal: required
+goal_object_model: required
 required_processes: required
 freedom_policy: required
 guardrail_candidates: required
@@ -91,6 +159,7 @@ Output:
 aggregate_goal:
   title: required
   objective: required
+  derived_from_final_goal: required
   completion_requires: []
 stories:
   - id: G001
@@ -104,12 +173,14 @@ stories:
     allowed_freedom_zone: []
 ```
 
-## 5. goal-verifier-designer
+## 7. goal-verifier-designer
 
 Input:
 
 ```yaml
 stories: required
+final_goal: required
+goal_object_model: required
 hard_constraints: required
 required_sequences: required
 domain_failure_modes: required
@@ -129,12 +200,14 @@ verifier_plan:
       failure_writeback: []
 ```
 
-## 6. goal-state-ledger-architect
+## 8. goal-state-ledger-architect
 
 Input:
 
 ```yaml
 intent_summary: required
+final_goal: required
+goal_object_model: required
 stories: required
 verifier_plan: required
 required_processes: required
@@ -149,15 +222,17 @@ state_and_ledger:
     intermediate_dir: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/"
     intermediate_outputs:
       intent: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/01-intent.yaml"
-      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-domain-process.yaml"
-      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/03-freedom-policy.yaml"
-      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-decomposition.yaml"
-      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-verifier-plan.yaml"
-      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-state-ledger.yaml"
-      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-steering-policy.yaml"
-      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-execution-handoff.yaml"
-      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-self-deepinterview.yaml"
-      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-critic-verdict.yaml"
+      final_goal: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/02-final-goal.yaml"
+      goal_object_model: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/03-goal-object-model.yaml"
+      domain_process: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/04-domain-process.yaml"
+      freedom_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/05-freedom-policy.yaml"
+      decomposition: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/06-decomposition.yaml"
+      verifier_plan: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/07-verifier-plan.yaml"
+      state_ledger: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/08-state-ledger.yaml"
+      steering_policy: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/09-steering-policy.yaml"
+      execution_handoff: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/10-execution-handoff.yaml"
+      self_deepinterview: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/11-self-deepinterview.yaml"
+      critic_verdict: ".goal-specs/intermediate/YYYY-MM-DD-<slug>/12-critic-verdict.yaml"
     reference_dir: ".goal-specs/references/YYYY-MM-DD-<slug>/"
     ledger_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/"
     brief: ".goal-specs/ledger/YYYY-MM-DD-<slug>/brief.md"
@@ -165,6 +240,8 @@ state_and_ledger:
     ledger: ".goal-specs/ledger/YYYY-MM-DD-<slug>/ledger.jsonl"
     evidence_index: ".goal-specs/ledger/YYYY-MM-DD-<slug>/evidence-index.md"
     steering_log: ".goal-specs/ledger/YYYY-MM-DD-<slug>/steering-log.md"
+    loop_documents_dir: ".goal-specs/ledger/YYYY-MM-DD-<slug>/loop-documents/"
+    loop_document_template: ".goal-specs/ledger/YYYY-MM-DD-<slug>/loop-documents/iteration-NNN.md"
     runtime_mirror_optional:
       omx_brief: ".omx/ultragoal/brief.md"
       omx_goals: ".omx/ultragoal/goals.json"
@@ -173,16 +250,33 @@ state_and_ledger:
       - ".goal-specs/ledger/YYYY-MM-DD-<slug>/domain-state.md"
   read_before_each_iteration: []
   write_after_each_iteration: []
+  loop_document_policy:
+    required: true
+    write_path: ".goal-specs/ledger/YYYY-MM-DD-<slug>/loop-documents/iteration-NNN.md"
+    must_include:
+      - story_id
+      - iteration_number
+      - objective_for_this_loop
+      - state_read
+      - actions_taken
+      - evidence_produced
+      - verifier_result
+      - decisions
+      - failures_or_blockers
+      - lessons_learned
+      - next_loop_change
   lesson_writeback_rules: []
   evidence_index_rules: []
 ```
 
-## 7. goal-steering-policy-designer
+## 9. goal-steering-policy-designer
 
 Input:
 
 ```yaml
 stories: required
+final_goal: required
+goal_object_model: required
 freedom_policy: required
 state_and_ledger: required
 authority_boundaries: required
@@ -209,12 +303,14 @@ steering_policy:
     - mutation_that_bypasses_verifier_or_quality_gate
 ```
 
-## 8. goal-handoff-writer
+## 10. goal-handoff-writer
 
 Input:
 
 ```yaml
 aggregate_goal: required
+final_goal: required
+goal_object_model: required
 stories: required
 verifier_plan: required
 state_and_ledger: required
@@ -234,7 +330,7 @@ execution_handoff:
   blocked_rule: required
 ```
 
-## 9. goal-self-deepinterview
+## 11. goal-self-deepinterview
 
 Input:
 
@@ -268,13 +364,14 @@ self_deepinterview:
   revision_instructions: []
 ```
 
-## 10. goal-spec-critic
+## 12. goal-spec-critic
 
 Input:
 
 ```yaml
 full_goal_contract: required
 raw_user_objective: required
+goal_object_model: required
 ```
 
 Output:
@@ -292,7 +389,13 @@ critic_result:
 ## Cross-Stage Invariants
 
 - Every hard constraint has a verifier check.
+- Final goal is explicit, state-shaped, and reflected in aggregate goal and stories.
+- Goal object model separates user-mentioned topics from the primary goal object.
+- Story decomposition follows the declared `decomposition_basis`, not merely the mentioned topics.
+- Required processes and verifier checks cover the declared completion surface and required capability chain.
+- Excluded surfaces are interpreted narrowly; excluding an implementation surface does not silently remove runtime, policy, audit, or contract surfaces required by the goal object.
 - Every story has success criteria and evidence requirements.
+- Every execution loop writes a loop document under `.goal-specs/ledger/YYYY-MM-DD-<slug>/loop-documents/`.
 - Every required process is reflected in story dependencies or checkpoint rules.
 - Every verifier failure has a writeback path.
 - Every plan mutation has evidence and rationale.

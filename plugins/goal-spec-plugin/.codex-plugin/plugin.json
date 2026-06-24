@@ -1,6 +1,6 @@
 {
   "name": "goal-spec-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Goal-spec orchestration skills for creating durable, verifier-gated, goal-executable specs.",
   "author": {
     "name": "bbangjo"
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Goal Spec",
     "shortDescription": "Create goal-executable spec files.",
-    "longDescription": "Goal Spec turns ambiguous objectives into durable, verifier-gated execution contracts. It orchestrates specialist skills for intent extraction, process mapping, freedom policy, decomposition, verification, state and ledger design, steering, self-deepinterview alignment, final critique, and goal handoff.",
+    "longDescription": "Goal Spec turns ambiguous objectives into durable, verifier-gated execution contracts. It orchestrates specialist skills for intent extraction, final goal design, goal object modeling, process mapping, freedom policy, decomposition, verification, state and ledger design, steering, self-deepinterview alignment, final critique, and goal handoff.",
     "developerName": "bbangjo",
     "category": "Productivity",
     "capabilities": [

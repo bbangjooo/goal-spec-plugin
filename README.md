@@ -5,15 +5,17 @@ Goal Spec is a Codex plugin marketplace for turning ambiguous objectives into du
 The main entry point is `$goal-spec`. It orchestrates specialist skills that each own one narrow part of the goal-spec pipeline:
 
 1. `goal-intent-extractor`
-2. `goal-domain-process-mapper`
-3. `goal-freedom-policy-designer`
-4. `goal-decomposer`
-5. `goal-verifier-designer`
-6. `goal-state-ledger-architect`
-7. `goal-steering-policy-designer`
-8. `goal-handoff-writer`
-9. `goal-self-deepinterview`
-10. `goal-spec-critic`
+2. `goal-final-goal-designer`
+3. `goal-object-modeler`
+4. `goal-domain-process-mapper`
+5. `goal-freedom-policy-designer`
+6. `goal-decomposer`
+7. `goal-verifier-designer`
+8. `goal-state-ledger-architect`
+9. `goal-steering-policy-designer`
+10. `goal-handoff-writer`
+11. `goal-self-deepinterview`
+12. `goal-spec-critic`
 
 ## Install
 
@@ -52,11 +54,13 @@ By default, `$goal-spec` writes project-local artifacts under `.goal-specs/`:
   specs/                 # final goal-executable specs
   intermediate/          # specialist outputs used to build final specs
   references/            # user-provided or extracted reference notes
-  ledger/                # evidence indexes, steering logs, resumable state
+  ledger/                # evidence indexes, loop docs, steering logs, resumable state
 ```
 
 Each final spec is a single Markdown file that can be handed to a future Codex goal executor. It includes:
 
+- final goal
+- goal object model
 - aggregate goal
 - story goals
 - required process
@@ -64,6 +68,7 @@ Each final spec is a single Markdown file that can be handed to a future Codex g
 - guardrails
 - verifier plan
 - state and ledger contract
+- per-loop documentation policy
 - steering policy
 - checkpoint policy
 - self-deepinterview alignment result

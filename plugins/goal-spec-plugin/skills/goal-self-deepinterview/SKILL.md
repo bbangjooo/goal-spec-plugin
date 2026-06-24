@@ -76,6 +76,9 @@ Adaptation for goal specs:
    - What did the draft omit that the user emphasized?
    - What did the draft over-constrain that should remain free?
    - What did the draft leave free that should be guarded?
+   - Did the draft mistake user-mentioned topics for the primary goal object?
+   - Does the draft's completion surface match what would actually make the user's goal true?
+   - Did any excluded surface get interpreted too broadly, removing runtime, policy, audit, or contract work that still belongs to the goal?
 4. If the answer is recoverable from source material, add it to `resolved_internally`.
 5. If not recoverable and it changes execution materially, set `USER_DECISION_NEEDED` and ask one concise question with 2-4 concrete options.
 6. If revisions are needed but no user decision is needed, set `REVISE` and write concrete `revision_instructions`.
@@ -106,4 +109,3 @@ If the runtime has native structured input, use it. Otherwise ask exactly one co
 ## Quality Bar
 
 The final goal spec should feel like a faithful operationalization of the user's natural-language intent, not merely a well-formed plan. A future executor should be able to explain why each story, guardrail, freedom zone, and completion gate follows from the user's words or from a clearly recorded internal resolution.
-

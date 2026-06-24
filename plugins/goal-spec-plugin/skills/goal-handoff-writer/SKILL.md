@@ -13,6 +13,8 @@ Write the section that a future goal executor can follow without rereading the d
 
 ```yaml
 aggregate_goal: required
+final_goal: required
+goal_object_model: required
 stories: required
 verifier_plan: required
 state_and_ledger: required
@@ -39,9 +41,9 @@ execution_handoff:
 - Say what state to read before work and what evidence to write after work.
 - Say when checkpoint complete is allowed.
 - Say when structured steering is required.
+- Remind the executor to preserve the goal object model's completion surface and required capability chain during steering.
 - Forbid final `update_goal complete` until all active stories are complete or superseded and the quality gate is `APPROVE + CLEAR`.
 
 ## Quality Bar
 
 The handoff should be copyable into a new goal execution turn as operational instructions.
-

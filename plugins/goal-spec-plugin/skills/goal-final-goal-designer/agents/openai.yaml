@@ -1,0 +1,8 @@
+interface:
+  display_name: "Goal Final Goal Designer"
+  short_description: "Design the final verifiable goal"
+  default_prompt: "Use $goal-final-goal-designer to turn this intent frame into a final aggregate goal."
+
+policy:
+  allow_implicit_invocation: true
+

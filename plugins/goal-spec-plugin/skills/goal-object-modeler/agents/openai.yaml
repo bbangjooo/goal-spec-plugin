@@ -1,0 +1,7 @@
+interface:
+  display_name: "Goal Object Modeler"
+  short_description: "Classify the real goal object and completion surface"
+  default_prompt: "Use $goal-object-modeler to classify the real goal object and completion surface before decomposition."
+
+policy:
+  allow_implicit_invocation: true

@@ -13,6 +13,8 @@ Allow goal execution to adapt without silent drift.
 
 ```yaml
 stories: required
+final_goal: required
+goal_object_model: required
 freedom_policy: required
 state_and_ledger: required
 authority_boundaries: required
@@ -46,8 +48,9 @@ steering_policy:
 - Reordering must not violate required sequences unless the sequence itself is revised with rationale.
 - Steering must never bypass verifier checks or the final quality gate.
 - User escalation is required only at authority boundaries.
+- Steering may split or add stories to preserve the goal object model's completion surface when execution reveals a missing owning system or capability-chain step.
+- Steering must reject mutations that narrow the goal to mentioned-topic implementation while leaving the primary goal object incomplete.
 
 ## Quality Bar
 
 The plan can learn during execution, but every change remains auditable.
-

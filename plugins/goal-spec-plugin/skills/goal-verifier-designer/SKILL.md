@@ -13,6 +13,8 @@ Design maker/checker separation so goal completion depends on evidence, not self
 
 ```yaml
 stories: required
+final_goal: required
+goal_object_model: required
 hard_constraints: required
 required_sequences: required
 domain_failure_modes: required
@@ -39,8 +41,9 @@ verifier_plan:
 - Maker self-report is never sufficient evidence.
 - Checks should name pass/fail criteria. If qualitative judgment is unavoidable, define the reviewer perspective.
 - Verification failures must specify what gets written back to state or ledger.
+- Aggregate checks must prove the `goal_object_model.completion_surface`, not just completion of named implementation topics.
+- Reject completion when the stories satisfy mentioned topics but leave a required owning system, capability-chain step, audit/provenance surface, runtime workflow, or policy surface uncovered.
 
 ## Quality Bar
 
 A goal executor should be unable to mark a story complete without producing evidence the verifier can inspect.
-
