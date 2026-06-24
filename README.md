@@ -15,21 +15,21 @@ The main entry point is `$goal-spec`. It orchestrates specialist skills that eac
 9. `goal-self-deepinterview`
 10. `goal-spec-critic`
 
-## Marketplace Install
+## Install
 
-Add this repository as a Codex plugin marketplace:
+Install with one command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/bbangjooo/goal-spec-plugin/main/install.sh | bash
+```
+
+Or run the Codex commands manually:
 
 ```bash
 codex plugin marketplace add bbangjooo/goal-spec-plugin \
   --sparse .agents/plugins \
   --sparse plugins/goal-spec-plugin
-```
 
-Then open the Codex plugin directory, select the `Goal Spec` marketplace, and install `goal-spec-plugin`.
-
-You can also install from CLI after adding the marketplace:
-
-```bash
 codex plugin add goal-spec-plugin@goal-spec
 ```
 
