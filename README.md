@@ -1,6 +1,6 @@
 # Goal Spec Plugin
 
-Goal Spec is a Codex plugin marketplace for turning ambiguous objectives into durable, verifier-gated, goal-executable specs.
+Goal Spec is a plugin marketplace (Codex and Claude Code) for turning ambiguous objectives into durable, verifier-gated, goal-executable specs.
 
 The main entry point is `$goal-spec`. It orchestrates grouped agents to keep the root context small:
 
@@ -23,7 +23,31 @@ goal-state-ledger-architect, goal-steering-policy-designer,
 goal-handoff-writer, goal-self-deepinterview, goal-spec-critic
 ```
 
-## Install
+## Install (Claude Code)
+
+Inside a Claude Code session:
+
+```text
+/plugin marketplace add bbangjooo/goal-spec-plugin
+/plugin install goal-spec-plugin@goal-spec
+```
+
+Or from the terminal:
+
+```bash
+claude plugin marketplace add bbangjooo/goal-spec-plugin
+claude plugin install goal-spec-plugin@goal-spec
+```
+
+Then start a new session and ask Claude to use the `goal-spec` skill, e.g.:
+
+```text
+Use the goal-spec skill to turn this objective into a goal-executable spec:
+
+<your objective here>
+```
+
+## Install (Codex)
 
 Install with one command:
 
@@ -44,9 +68,11 @@ codex plugin add goal-spec-plugin@goal-spec
 ## Repository Layout
 
 ```text
-.agents/plugins/marketplace.json       # marketplace catalog
-plugins/goal-spec-plugin/              # installable Codex plugin
-  .codex-plugin/plugin.json
+.claude-plugin/marketplace.json        # Claude Code marketplace catalog
+.agents/plugins/marketplace.json       # Codex marketplace catalog
+plugins/goal-spec-plugin/              # installable plugin (both runtimes)
+  .claude-plugin/plugin.json           # Claude Code manifest
+  .codex-plugin/plugin.json            # Codex manifest
   skills/
 examples/
 ```

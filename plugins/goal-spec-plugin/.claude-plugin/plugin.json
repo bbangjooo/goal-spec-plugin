@@ -1,0 +1,16 @@
+{
+  "name": "goal-spec-plugin",
+  "version": "0.1.5",
+  "description": "Grouped-agent goal-spec orchestration skills for creating durable, verifier-gated, goal-executable specs.",
+  "author": {
+    "name": "bbangjo"
+  },
+  "license": "MIT",
+  "keywords": [
+    "goals",
+    "specs",
+    "orchestration",
+    "claude-code",
+    "skills"
+  ]
+}

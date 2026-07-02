@@ -1,6 +1,6 @@
 ---
 name: goal-execution-discipline-designer
-description: Use in the goal-spec pipeline to design execution discipline policies: iron-law gates, two-stage review, plan granularity, and rationalization red-flag checks.
+description: "Use in the goal-spec pipeline to design execution discipline policies: iron-law gates, two-stage review, plan granularity, and rationalization red-flag checks."
 ---
 
 # Goal Execution Discipline Designer

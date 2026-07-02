@@ -1,0 +1,17 @@
+{
+  "name": "goal-spec",
+  "owner": {
+    "name": "bbangjo"
+  },
+  "metadata": {
+    "description": "Goal Spec: turn ambiguous objectives into durable, verifier-gated, goal-executable specs."
+  },
+  "plugins": [
+    {
+      "name": "goal-spec-plugin",
+      "source": "./plugins/goal-spec-plugin",
+      "description": "Grouped-agent goal-spec orchestration skills for creating durable, verifier-gated, goal-executable specs.",
+      "category": "productivity"
+    }
+  ]
+}
